@@ -15,7 +15,7 @@ function MyTabs() {
     <Tab.Navigator 
       activeColor="#f0edf6"
       inactiveColor="#3e2465"
-      barStyle={{ backgroundColor: 'green' }}
+      barStyle={{ backgroundColor: '#CBB26A', paddingBottom:2 }}
     >
       <Tab.Screen 
         name="Feed" 
@@ -58,7 +58,7 @@ export default MyTabs;
 
 const styles = StyleSheet.create({
   tabs: {
-    backgroundColor: 'green'
+    backgroundColor: '#CBB26A'
   }
 });
 
