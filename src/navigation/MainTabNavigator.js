@@ -12,7 +12,8 @@ const Tab = createMaterialBottomTabNavigator();
 
 function MyTabs() {
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
+      initialRouteName='Feed' 
       activeColor="#f0edf6"
       inactiveColor="#3e2465"
       barStyle={{ backgroundColor: '#CBB26A', paddingBottom:2 }}
