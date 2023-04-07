@@ -6,9 +6,7 @@ import { StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
@@ -16,13 +14,15 @@ function MyTabs() {
       initialRouteName='Feed' 
       activeColor="#f0edf6"
       inactiveColor="#3e2465"
-      barStyle={{ backgroundColor: '#CBB26A', paddingBottom:2 }}
+      barStyle={{ backgroundColor: '#CBB26A', paddingBottom:2, elevation:0
+     }}
     >
       <Tab.Screen 
         name="Feed" 
         component={FeedScreen}
         options={{
           tabBarLabel: 'Feed',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={34} />
           ),
@@ -34,6 +34,7 @@ function MyTabs() {
         component={FungiSensorScreen}
         options={{
           tabBarLabel: 'Fungi',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="mushroom" color={color} size={34} />
           ),
@@ -46,6 +47,7 @@ function MyTabs() {
         component={ProfileScreen} 
         options={{
           tabBarLabel: 'Profile',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={34} />
           ),
