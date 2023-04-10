@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FeedScreen from '../components/Feed/FeedScreen';
 import ProfileScreen from '../components/Profile/ProfileScreen';
 import FungiSensorScreen from '../components/FungiSensor/FungiSensorScreen';
-import { StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
@@ -11,11 +11,13 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName='Feed' 
+      initialRouteName='Feed'
       activeColor="#f0edf6"
       inactiveColor="#3e2465"
-      barStyle={{ backgroundColor: '#CBB26A', paddingBottom:2, elevation:0
-     }}
+      screenOptions={{
+        tabBarStyle: {backgroundColor:'#D4B16A', height:70, paddingBottom:8},
+      }}
+      
     >
       <Tab.Screen 
         name="Feed" 
@@ -23,8 +25,19 @@ function MyTabs() {
         options={{
           tabBarLabel: 'Feed',
           headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={34} />
+          tabBarIcon: ({ focused }) => (
+            <View>
+              <Image
+                source={require('../assets/forum.png')}
+                resizeMode='contain'
+                style={{
+                  width: 35,
+                  height: 35,
+                  tintColor: focused ? 'black' : '#748c94'
+                }}
+
+              />
+            </View>  
           ),
         }}   
         
@@ -62,6 +75,6 @@ export default MyTabs;
 const styles = StyleSheet.create({
   tabs: {
     backgroundColor: '#CBB26A'
-  }
+  },
 });
 
