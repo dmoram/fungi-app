@@ -6,7 +6,7 @@ import MainStack from './src/navigation/MainStackNavigator';
 export default function App() {
   return (
     <NavigationContainer style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <MainStack/>
     </NavigationContainer>
   );

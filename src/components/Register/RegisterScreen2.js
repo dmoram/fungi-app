@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
+
 const RegisterScreen2 = ({ navigation, route }) => {
   const [age, setAge] = useState("");
   const [userType, setUserType] = useState("");
@@ -41,7 +42,7 @@ const RegisterScreen2 = ({ navigation, route }) => {
     };
 
     try {
-      const response = await fetch("http://192.168.1.10:8000/api/usuarios", {
+      const response = await fetch("http://192.168.43.218:8000/api/usuarios", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,8 +51,8 @@ const RegisterScreen2 = ({ navigation, route }) => {
       });
       const jsonResponse = await response.json();
       console.log(jsonResponse);
-      if(jsonResponse.ok){
-        navigation.navigate("Login")
+      if (jsonResponse.ok) {
+        navigation.navigate("Login");
       }
       console.log(JSON.stringify(data));
 
@@ -90,10 +91,10 @@ const RegisterScreen2 = ({ navigation, route }) => {
         placeholder="Edad"
         value={age}
         onChangeText={setAge}
+        keyboardType="numeric"
       />
       <Text style={styles.description}>Indica tu nivel de conocimiento</Text>
       {options.map((option) => (
-        
         <TouchableOpacity
           key={option.name}
           style={{
@@ -103,7 +104,7 @@ const RegisterScreen2 = ({ navigation, route }) => {
             width: "80%",
             padding: 20,
             margin: 5,
-            flexDirection: 'row', // Agrega este estilo
+            flexDirection: "row", // Agrega este estilo
             backgroundColor: userType === option.name ? "#4caf50" : "#fff",
           }}
           onPress={() => handleSelect(option.name)}
@@ -114,7 +115,6 @@ const RegisterScreen2 = ({ navigation, route }) => {
               color: userType === option.name ? "#fff" : "#000",
               textAlign: "center",
               fontSize: 17,
-              
             }}
           >
             {option.name}
@@ -189,6 +189,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 30,
     height: 30,
-    marginRight: 30
+    marginRight: 30,
   },
 });

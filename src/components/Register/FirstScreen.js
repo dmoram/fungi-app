@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
+
 const FirstScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -21,10 +22,18 @@ const FirstScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
+          navigation.navigate("Login");
+        }}
+      >
+        <Text style={styles.buttonText}>Iniciar sesión</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, {marginTop:15}]}
+        onPress={() => {
           navigation.navigate("RegisterScreen");
         }}
       >
-        <Text style={styles.buttonText}>Únete a la comunidad!</Text>
+        <Text style={styles.buttonText}>Regístrate</Text>
       </TouchableOpacity>
     </View>
   );
@@ -57,21 +66,23 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   button: {
-    backgroundColor: "#70527C",
+    backgroundColor: "#0D4A4D",
     borderRadius: 15,
     padding: 20,
     marginTop: 100,
+    width:'40%'
   },
   buttonText: {
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
+    alignSelf:'center'
   },
   box: {
     marginTop: 20,
-    backgroundColor: "#477187",
+    backgroundColor: "#3D1A50",
     borderRadius: 10,
-    opacity: 0.8,
+    opacity: 0.75,
     paddingVertical: 20,
   },
 });
