@@ -5,9 +5,9 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
-import GlobalStyles from '../styles/GlobalStyles'
+import GlobalStyles from "../styles/GlobalStyles";
 
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -19,7 +19,6 @@ const RegisterScreen = ({ navigation }) => {
   useEffect(() => {
     console.log(selectedGender);
   }, [selectedGender]);
-
 
   const handleRegister = () => {
     if (!username || !fullName || !email || !password || !selectedGender) {
@@ -72,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
       <Picker
         selectedValue={selectedGender}
         onValueChange={(itemValue, itemIndex) => {
-            setSelectedGender(itemValue);
+          setSelectedGender(itemValue);
         }}
         style={styles.picker}
         prompt="Seleccione"
@@ -106,7 +105,7 @@ export default RegisterScreen;
 
 const styles = StyleSheet.create({
   picker: {
-    marginTop:10,
+    marginTop: 10,
     width: "80%",
     borderWidth: 2,
     color: "white",
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
     bottom: 16,
     right: 16,
     borderRadius: 15,
-    elevation:5
+    elevation: 5,
   },
   text: {
     color: "white",

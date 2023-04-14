@@ -5,7 +5,7 @@ const FirstScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/hongo_bg.jpg")}
+        source={require("../assets/hongo_bg.jpg")}
         style={styles.image}
       />
       <Text style={styles.title}>

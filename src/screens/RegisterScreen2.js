@@ -16,10 +16,10 @@ const RegisterScreen2 = ({ navigation, route }) => {
   const [userType, setUserType] = useState("");
   const { username, fullName, email, password, gender } = route.params;
   const options = [
-    { name: "Principiante", img: require("../../assets/forum.png") },
-    { name: "Aficionado", img: require("../../assets/forum.png") },
-    { name: "Micólogo(a) amaterur", img: require("../../assets/forum.png") },
-    { name: "Micólogo(a) experto", img: require("../../assets/forum.png") },
+    { name: "Principiante", img: require("../assets/forum.png") },
+    { name: "Aficionado", img: require("../assets/forum.png") },
+    { name: "Micólogo(a) amaterur", img: require("../assets/forum.png") },
+    { name: "Micólogo(a) experto", img: require("../assets/forum.png") },
   ];
 
   const handleSelect = (option) => {
