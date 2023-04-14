@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect} from "react";
 import { Picker } from "@react-native-picker/picker";
+import GlobalStyles from '../styles/GlobalStyles'
 
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -36,38 +37,38 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Registro: Paso 1</Text>
-      <Text style={styles.description}>Nombre de usuario</Text>
+    <View style={GlobalStyles.container}>
+      <Text style={GlobalStyles.title}>Registro: Paso 1</Text>
+      <Text style={GlobalStyles.description}>Nombre de usuario</Text>
       <TextInput
-        style={styles.input}
+        style={GlobalStyles.input}
         placeholder="Nombre de usuario"
         value={username}
         onChangeText={setUsername}
       />
-      <Text style={styles.description}>Nombre completo</Text>
+      <Text style={GlobalStyles.description}>Nombre completo</Text>
       <TextInput
-        style={styles.input}
+        style={GlobalStyles.input}
         placeholder="Nombre completo"
         value={fullName}
         onChangeText={setFullName}
       />
-      <Text style={styles.description}>Correo electrónico</Text>
+      <Text style={GlobalStyles.description}>Correo electrónico</Text>
       <TextInput
-        style={styles.input}
+        style={GlobalStyles.input}
         placeholder="Correo"
         value={email}
         onChangeText={setEmail}
       />
-      <Text style={styles.description}>Contraseña</Text>
+      <Text style={GlobalStyles.description}>Contraseña</Text>
       <TextInput
-        style={styles.input}
+        style={GlobalStyles.input}
         placeholder="Contraseña"
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
       />
-      <Text style={styles.description}>Género</Text>
+      <Text style={GlobalStyles.description}>Género</Text>
       <Picker
         selectedValue={selectedGender}
         onValueChange={(itemValue, itemIndex) => {
@@ -104,32 +105,6 @@ const RegisterScreen = ({ navigation }) => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFE3E0",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingTop: 80,
-  },
-  description: {
-    fontSize: 17,
-    width: "80%",
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  input: {
-    width: "80%",
-    height: 40,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#8B0000",
-    borderRadius: 5,
-    marginVertical: 10,
-  },
   picker: {
     marginTop:10,
     width: "80%",
@@ -147,15 +122,11 @@ const styles = StyleSheet.create({
     bottom: 16,
     right: 16,
     borderRadius: 15,
+    elevation:5
   },
   text: {
     color: "white",
     fontSize: 20,
-  },
-  opciones: {
-    width: "100%",
-    marginTop: 10,
-    flexDirection: "column",
   },
   iconImageStyle: { height: 20, width: 20 },
 });

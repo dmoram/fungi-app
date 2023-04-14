@@ -24,4 +24,30 @@ const getToken = async () => {
   }
 };
 
-export {storeToken, getToken}
+// Función para almacenar el token en AsyncStorage
+const storeUserId = async (value) => {
+  try {
+    await AsyncStorage.setItem('@id', value);
+  } catch (error) {
+    console.error('Error al guardar el id: ', error);
+  }
+};
+
+// Función para obtener el token de AsyncStorage
+const getUserId = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@id');
+    if (value !== null) {
+      return value;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al obtener el id: ', error);
+    return null;
+  }
+};
+
+
+
+export {storeToken, getToken, storeUserId, getUserId}

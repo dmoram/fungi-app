@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "../components/Login/LoginScreen";
+import LoginScreen from "../screens/LoginScreen";
 import MyTabs from "./MainTabNavigator";
-import FirstScreen from "../components/Register/FirstScreen";
-import RegisterScreen from "../components/Register/RegisterScreen1";
-import RegisterScreen2 from "../components/Register/RegisterScreen2";
+import FirstScreen from "../screens/FirstScreen";
+import RegisterScreen from "../screens/RegisterScreen1";
+import RegisterScreen2 from "../screens/RegisterScreen2";
 
 const Stack = createStackNavigator();
 

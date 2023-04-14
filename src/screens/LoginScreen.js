@@ -6,14 +6,15 @@ import {
   TextInput,
 } from "react-native";
 import React, { useState } from "react";
-import axios from "../../api/axios"
-import {storeToken} from "../../utils/storage"
+import axios from "../api/axios"
+import {storeToken, storeUserId} from "../utils/storage"
+import GlobalStyles from '../styles/GlobalStyles'
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <View style={styles.container}>
+    <View style={GlobalStyles.container}>
       <Text style={styles.title}>Login</Text>
       <Text style={styles.description}>Correo electrónico</Text>
       <TextInput
@@ -39,6 +40,8 @@ const LoginScreen = ({ navigation }) => {
               console.log("Token recibido")
               // Se almacena el token de usuario
               storeToken(response.data.token)
+              storeUserId((response.data.id).toString())
+              
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'Tabs' }],
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 30,
     borderRadius: 15,
+    elevation:5
   },
   text: {
     color: "white",

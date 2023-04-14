@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
-
 const FirstScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -28,7 +27,7 @@ const FirstScreen = ({ navigation }) => {
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, {marginTop:15}]}
+        style={[styles.button, { marginTop: 15 }]}
         onPress={() => {
           navigation.navigate("RegisterScreen");
         }}
@@ -70,13 +69,14 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     marginTop: 100,
-    width:'40%'
+    width: "40%",
+    elevation: 5
   },
   buttonText: {
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
-    alignSelf:'center'
+    alignSelf: "center",
   },
   box: {
     marginTop: 20,
