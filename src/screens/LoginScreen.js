@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
           axios.post('/usuarios/login', { email, password })
             .then(response => {
               // Si la solicitud es exitosa, navegamos a la pantalla de Tabs
-              console.log("Token recibido")
+              console.log("Logged in")
               // Se almacena el token de usuario
               storeToken(response.data.token)
               storeUserId((response.data.id).toString())

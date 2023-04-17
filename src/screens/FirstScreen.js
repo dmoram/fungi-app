@@ -19,7 +19,7 @@ const FirstScreen = ({ navigation }) => {
         <Text style={styles.text}>¡Regístrate ahora para comenzar!</Text>
       </View>
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button,{ marginTop: 15 }]}
         onPress={() => {
           navigation.navigate("Login");
         }}
@@ -27,7 +27,7 @@ const FirstScreen = ({ navigation }) => {
         <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, { marginTop: 15 }]}
+        style={styles.button}
         onPress={() => {
           navigation.navigate("RegisterScreen");
         }}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0D4A4D",
     borderRadius: 15,
     padding: 20,
-    marginTop: 100,
+    marginBottom: 20,
     width: "40%",
     elevation: 5
   },

@@ -6,6 +6,16 @@ import MyTabs from "./MainTabNavigator";
 import FirstScreen from "../screens/FirstScreen";
 import RegisterScreen from "../screens/RegisterScreen1";
 import RegisterScreen2 from "../screens/RegisterScreen2";
+import NewPostScreen from "../screens/NewPostScreen";
+
+function ScreenOptions(title) {
+  return {
+    headerShown: true,
+    headerTintColor: 'white',
+    headerStyle: { backgroundColor: '#370837' },
+    headerTitle: title,
+  };
+}
 
 const Stack = createStackNavigator();
 
@@ -36,6 +46,12 @@ const MainStackNavigator = () => {
         name="Tabs"
         component={MyTabs}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NewPostScreen"
+        component={NewPostScreen}
+        options={ScreenOptions('Nueva publicación')}
+        
       />
     </Stack.Navigator>
   );

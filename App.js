@@ -6,7 +6,11 @@ import MainStack from './src/navigation/MainStackNavigator';
 export default function App() {
   return (
     <NavigationContainer style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar
+        backgroundColor="#ffffff"
+        barStyle="dark-content"
+        translucent={true}
+      />
       <MainStack/>
     </NavigationContainer>
   );
