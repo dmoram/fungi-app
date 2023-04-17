@@ -14,6 +14,7 @@ function ScreenOptions(title) {
     headerTintColor: 'white',
     headerStyle: { backgroundColor: '#370837' },
     headerTitle: title,
+    headerTitleAlign: 'center'
   };
 }
 
@@ -30,17 +31,17 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="RegisterScreen"
         component={RegisterScreen}
-        options={{ headerShown: false }}
+        options={ScreenOptions('Registro: Paso 1')}
       />
       <Stack.Screen
         name="RegisterScreen2"
         component={RegisterScreen2}
-        options={{ headerShown: false }}
+        options={ScreenOptions('Registro: Paso 2')}
       />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={ScreenOptions('Inicio de sesión')}
       />
       <Stack.Screen
         name="Tabs"

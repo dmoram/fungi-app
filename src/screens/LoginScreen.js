@@ -15,7 +15,6 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   return (
     <View style={GlobalStyles.container}>
-      <Text style={styles.title}>Login</Text>
       <Text style={styles.description}>Correo electrónico</Text>
       <TextInput
         style={styles.input}

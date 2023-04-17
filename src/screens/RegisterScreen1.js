@@ -37,7 +37,6 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <View style={GlobalStyles.container}>
-      <Text style={GlobalStyles.title}>Registro: Paso 1</Text>
       <Text style={GlobalStyles.description}>Nombre de usuario</Text>
       <TextInput
         style={GlobalStyles.input}

@@ -76,7 +76,6 @@ const RegisterScreen2 = ({ navigation, route }) => {
   };
   return (
     <View style={GlobalStyles.container}>
-      <Text style={GlobalStyles.title}>Registro: Paso 2</Text>
       <Text style={GlobalStyles.description}>Indique su edad</Text>
       <TextInput
         style={GlobalStyles.input}
