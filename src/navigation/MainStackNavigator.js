@@ -60,4 +60,4 @@ const MainStackNavigator = () => {
 
 export default MainStackNavigator;
 
-const styles = StyleSheet.create({});
+
