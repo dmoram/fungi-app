@@ -8,6 +8,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
 import GlobalStyles from "../styles/GlobalStyles";
+import Notif from "../components/Popup/NotifPopup";
 
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -15,21 +16,47 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [selectedGender, setSelectedGender] = useState("masculino");
+  const [errMsg, setErrMsg] = useState("")
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+
+  const handleConfirm = () => {
+    // Mostrar la ventana emergente de confirmación
+    setIsPopupOpen(false);
+    setConfirm(true);
+  };
 
   useEffect(() => {
     console.log(selectedGender);
   }, [selectedGender]);
 
   const handleRegister = () => {
-    if (!username || !fullName || !email || !password || !selectedGender) {
-      alert("Por favor, completa todos los campos.");
+    if (!username) {
+      setErrMsg("Por favor, ingresa un nombre de usuario");
+      setIsPopupOpen(true);
+      return false;
+    }else if (!fullName){
+      setErrMsg("Por favor, ingresa tu nombre completo");
+      setIsPopupOpen(true);
       return false;
     }
+    else if (!email){
+      setErrMsg("Por favor, ingresa tu correo electrónico");
+      setIsPopupOpen(true);
+      return false;
+    }
+    else if (!password || password.length < 7){
+      setErrMsg("Por favor, ingresa una contraseña de al menos 7 caracteres");
+      setIsPopupOpen(true);
+      return false;
+    }
+
 
     // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert("Por favor, introduce un correo electrónico válido.");
+      setErrMsg("Por favor, introduce un correo electrónico válido")
+      setIsPopupOpen(true);
       return false;
     }
     return true;
@@ -94,8 +121,14 @@ const RegisterScreen = ({ navigation }) => {
           }
         }}
       >
-        <Text style={styles.text}>Siguiente</Text>
+        <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
+      <Notif
+        visible={isPopupOpen}
+        onConfirm={handleConfirm}
+      >
+        <Text style={styles.text}>{errMsg}</Text>
+      </Notif>
     </View>
   );
 };
@@ -122,9 +155,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     elevation: 5,
   },
-  text: {
+  buttonText: {
     color: "white",
     fontSize: 20,
+  },
+  text:{
+    fontSize: 16
   },
   iconImageStyle: { height: 20, width: 20 },
 });

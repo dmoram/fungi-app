@@ -1,21 +1,22 @@
-import React from 'react';
-import { Modal, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import React from "react";
+import { Modal, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 
-
-const Popup = ({ visible, onClose, children }) => {
+const NotifPopup = ({ visible, children, onConfirm }) => {
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
+      onRequestClose={() => {}}
     >
       <View style={styles.container}>
         <View style={styles.popup}>
           {children}
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Text style={styles.button}>Ok</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={onConfirm} style={styles.button}>
+              <Text style={styles.buttonText}>Ok</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -25,22 +26,37 @@ const Popup = ({ visible, onClose, children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   popup: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 5,
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
+    width: "85%",
   },
   button: {
-    position: 'absolute',
-    marginTop: 30,
-    backgroundColor:'teal'
-  }
+    padding: 5,
+    backgroundColor: "teal",
+    flex: 1,
+    maxWidth: 50,
+    borderRadius: 4,
+    marginHorizontal:20
+  },
+  buttonText: {
+    color: "#FFF",
+    fontSize: 16,
+    textAlign:'center'
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 40,
+   
+  },
 });
 
-export default Popup;
+export default NotifPopup;

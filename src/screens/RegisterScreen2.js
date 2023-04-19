@@ -7,9 +7,9 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
-import GlobalStyles from '../styles/GlobalStyles'
+import GlobalStyles from "../styles/GlobalStyles";
 import axios from "../api/axios";
-
+import Notif from "../components/Popup/NotifPopup";
 
 const RegisterScreen2 = ({ navigation, route }) => {
   const [age, setAge] = useState("");
@@ -21,6 +21,15 @@ const RegisterScreen2 = ({ navigation, route }) => {
     { name: "Micólogo(a) amaterur", img: require("../assets/forum.png") },
     { name: "Micólogo(a) experto", img: require("../assets/forum.png") },
   ];
+  const [errMsg, setErrMsg] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+
+  const handleConfirm = () => {
+    // Mostrar la ventana emergente de confirmación
+    setIsPopupOpen(false);
+    setConfirm(true);
+  };
 
   const handleSelect = (option) => {
     if (userType === option) {
@@ -42,12 +51,12 @@ const RegisterScreen2 = ({ navigation, route }) => {
       age: parseInt(age),
       userType,
     };
-  
+
     try {
-      const response = await axios.post('/usuarios', data);
+      const response = await axios.post("/usuarios", data);
       console.log(response.data);
       if (response.data.ok) {
-        navigation.navigate('Login');
+        navigation.navigate("Login");
       }
       console.log(JSON.stringify(data));
     } catch (error) {
@@ -57,19 +66,26 @@ const RegisterScreen2 = ({ navigation, route }) => {
   const validarEdad = (edad) => {
     const parsedEdad = parseInt(edad, 10);
     if (isNaN(parsedEdad)) {
-      alert("La edad debe ser un número.");
+      setErrMsg("La edad debe ser un número.");
+      setIsPopupOpen(true);
       return false;
     }
-    if (parsedEdad < 18 || parsedEdad > 99) {
-      alert("La edad debe estar entre 18 y 99 años.");
+    if (parsedEdad < 12 || parsedEdad > 99) {
+      setErrMsg("La edad debe estar entre 12 y 99 años.");
+      setIsPopupOpen(true);
       return false;
     }
     return true;
   };
 
   const handleRegister = () => {
-    if (!age || !userType) {
-      alert("Por favor, completa todos los campos.");
+    if (!age){
+      setErrMsg("Por favor, indica tu edad");
+      setIsPopupOpen(true);
+      return false;
+    }else if (!userType){
+      setErrMsg("Por favor, indica una categoría de usuario");
+      setIsPopupOpen(true);
       return false;
     }
     return !!validarEdad(age);
@@ -84,7 +100,9 @@ const RegisterScreen2 = ({ navigation, route }) => {
         onChangeText={setAge}
         keyboardType="numeric"
       />
-      <Text style={GlobalStyles.description}>Indica tu nivel de conocimiento</Text>
+      <Text style={GlobalStyles.description}>
+        Indica tu nivel de conocimiento
+      </Text>
       {options.map((option) => (
         <TouchableOpacity
           key={option.name}
@@ -120,8 +138,14 @@ const RegisterScreen2 = ({ navigation, route }) => {
           }
         }}
       >
-        <Text style={styles.text}>Siguiente</Text>
+        <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
+      <Notif
+        visible={isPopupOpen}
+        onConfirm={handleConfirm}
+      >
+        <Text style={styles.text}>{errMsg}</Text>
+      </Notif>
     </View>
   );
 };
@@ -145,11 +169,14 @@ const styles = StyleSheet.create({
     bottom: 16,
     right: 16,
     borderRadius: 15,
-    elevation:5
+    elevation: 5,
   },
-  text: {
+  buttonText: {
     color: "white",
     fontSize: 20,
+  },
+  text: {
+    fontSize: 16
   },
   logo: {
     width: 30,
