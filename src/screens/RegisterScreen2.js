@@ -23,12 +23,10 @@ const RegisterScreen2 = ({ navigation, route }) => {
   ];
   const [errMsg, setErrMsg] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [confirm, setConfirm] = useState(false);
 
   const handleConfirm = () => {
     // Mostrar la ventana emergente de confirmación
     setIsPopupOpen(false);
-    setConfirm(true);
   };
 
   const handleSelect = (option) => {
@@ -79,11 +77,11 @@ const RegisterScreen2 = ({ navigation, route }) => {
   };
 
   const handleRegister = () => {
-    if (!age){
+    if (!age) {
       setErrMsg("Por favor, indica tu edad");
       setIsPopupOpen(true);
       return false;
-    }else if (!userType){
+    } else if (!userType) {
       setErrMsg("Por favor, indica una categoría de usuario");
       setIsPopupOpen(true);
       return false;
@@ -140,10 +138,7 @@ const RegisterScreen2 = ({ navigation, route }) => {
       >
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
-      <Notif
-        visible={isPopupOpen}
-        onConfirm={handleConfirm}
-      >
+      <Notif visible={isPopupOpen} onConfirm={handleConfirm}>
         <Text style={styles.text}>{errMsg}</Text>
       </Notif>
     </View>
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   text: {
-    fontSize: 16
+    fontSize: 16,
   },
   logo: {
     width: 30,

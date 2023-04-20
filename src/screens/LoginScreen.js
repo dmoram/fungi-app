@@ -6,19 +6,42 @@ import {
   TextInput,
 } from "react-native";
 import React, { useState } from "react";
-import axios from "../api/axios"
-import {storeToken, storeUserId} from "../utils/storage"
-import GlobalStyles from '../styles/GlobalStyles'
+import axios from "../api/axios";
+import { storeToken, storeUserId } from "../utils/storage";
+import GlobalStyles from "../styles/GlobalStyles";
+import Notif from "../components/Popup/NotifPopup";
+import { validarEmail } from "../utils/utils";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleConfirm = () => {
+    // Mostrar la ventana emergente de confirmación
+    setIsPopupOpen(false);
+  };
+
+  const handleLogin = () => {
+    if (!validarEmail(email)) {
+      setErrMsg("Por favor, ingresa un correo electrónico válido");
+      setIsPopupOpen(true);
+      return false;
+    } else if (password.length < 7) {
+      setErrMsg("Por favor, ingresa una contraseña válida (7 o más caracteres)");
+      setIsPopupOpen(true);
+      return false;
+    }
+    return true;
+  };
+
   return (
     <View style={GlobalStyles.container}>
       <Text style={styles.description}>Correo electrónico</Text>
       <TextInput
         style={styles.input}
-        placeholder="Nombre de usuario"
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
       />
@@ -33,28 +56,36 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          axios.post('/usuarios/login', { email, password })
-            .then(response => {
-              // Si la solicitud es exitosa, navegamos a la pantalla de Tabs
-              console.log("Logged in")
-              // Se almacena el token de usuario
-              storeToken(response.data.token)
-              storeUserId((response.data.id).toString())
-              
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Tabs' }],
+          if (handleLogin()) {
+            axios
+              .post("/usuarios/login", { email, password })
+              .then((response) => {
+                // Si la solicitud es exitosa, navegamos a la pantalla de Tabs
+                console.log("Logged in");
+                // Se almacena el token de usuario
+                storeToken(response.data.token);
+                storeUserId(response.data.id.toString());
+
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Tabs" }],
+                });
+              })
+              .catch((error) => {
+                // Si la solicitud falla, muestra un mensaje de error
+                console.error(error.response.data.msg);
+                setErrMsg(error.response.data.msg);
+                setIsPopupOpen(true);
+                return false;
               });
-            })
-            .catch(error => {
-              // Si la solicitud falla, muestra un mensaje de error
-              console.error(error);
-              alert('Error al iniciar sesión. Inténtalo de nuevo más tarde.');
-            });
+          }
         }}
       >
-        <Text style={styles.text}>Iniciar sesión</Text>
+        <Text style={styles.buttonText}>Iniciar sesión</Text>
       </TouchableOpacity>
+      <Notif visible={isPopupOpen} onConfirm={handleConfirm}>
+        <Text style={styles.text}>{errMsg}</Text>
+      </Notif>
     </View>
   );
 };
@@ -95,10 +126,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 30,
     borderRadius: 15,
-    elevation:5
+    elevation: 5,
   },
-  text: {
+  buttonText: {
     color: "white",
     fontSize: 20,
+  },
+  text: {
+    fontSize: 16
   },
 });
