@@ -1,15 +1,21 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 
-const Post = (props) => {
+const Post = ({author, content, likes, onPressLike}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.text, styles.title]}>{props.author}</Text>
+        <Text style={[styles.text, styles.title]}>{author}</Text>
       </View>
-      <Text style={[styles.text, styles.content]}>{props.content}</Text>
+      <Text style={[styles.text, styles.content]}>{content}</Text>
+      
       <View style={styles.footer}>
-        <Text style={[styles.text, styles.likes]}>{props.likes}</Text>
+        <TouchableOpacity onPress={onPressLike}>
+          <Text>Likes {likes}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text>Comentarios {likes}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -36,8 +42,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor:'teal',
+    elevation:10,
+    borderRadius:10,
+    height:30,
+    marginBottom:0
+    
   },
   title: {
     fontSize: 18,
