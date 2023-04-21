@@ -12,13 +12,30 @@ import { getUserId } from "../utils/storage";
 import axios from "../api/axios";
 import Confirm from "../components/Popup/ConfirmPopup";
 import Notif from "../components/Popup/NotifPopup";
+import * as ImagePicker from "expo-image-picker";
 
 const NewPostScreen = ({ navigation }) => {
   const [text, setText] = useState("");
   const [msg, setMsg] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [image, setImage] = useState(null);
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   const handleConfirm = () => {
     // Mostrar la ventana emergente de confirmación
     setIsPopupOpen(true);
@@ -62,8 +79,14 @@ const NewPostScreen = ({ navigation }) => {
         onChangeText={(text) => setText(text)}
         value={text}
       />
-      <TouchableOpacity style={styles.button} onPress={handleConfirm}>
-        <Text>Publicar</Text>
+      <TouchableOpacity onPress={pickImage}>
+        <Text>Subir Imagen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[GlobalStyles.button, { marginTop: 40 }]}
+        onPress={handleConfirm}
+      >
+        <Text style={GlobalStyles.button_text}>Publicar</Text>
       </TouchableOpacity>
       <Confirm
         visible={isPopupOpen}
@@ -92,6 +115,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlignVertical: "top",
     fontSize: 17,
+    borderRadius: 10,
   },
   button: {
     padding: 15,

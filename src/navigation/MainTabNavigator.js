@@ -69,6 +69,6 @@ export default MyTabs;
 
 const styles = StyleSheet.create({
   tabs: {
-    backgroundColor: "#CBB26A",
+    backgroundColor: "#F9F9F8",
   },
 });

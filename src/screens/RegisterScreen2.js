@@ -16,10 +16,11 @@ const RegisterScreen2 = ({ navigation, route }) => {
   const [userType, setUserType] = useState("");
   const { username, fullName, email, password, gender } = route.params;
   const options = [
-    { name: "Principiante", img: require("../assets/forum.png") },
-    { name: "Aficionado", img: require("../assets/forum.png") },
-    { name: "Micólogo(a) amaterur", img: require("../assets/forum.png") },
-    { name: "Micólogo(a) experto", img: require("../assets/forum.png") },
+    { name: "Principiante", img: require("../assets/principiante.png") },
+    { name: "Observador(a)", img: require("../assets/observador.png") },
+    { name: "Aficionado(a)", img: require("../assets/aficionado.png") },
+    { name: "Experto(a)", img: require("../assets/experto.png") },
+    { name: "Investigador(a)", img: require("../assets/investigador.png") },
   ];
   const [errMsg, setErrMsg] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -90,7 +91,7 @@ const RegisterScreen2 = ({ navigation, route }) => {
   };
   return (
     <View style={GlobalStyles.container}>
-      <Text style={GlobalStyles.description}>Indique su edad</Text>
+      <Text style={GlobalStyles.description}>Indica tu edad</Text>
       <TextInput
         style={GlobalStyles.input}
         placeholder="Edad"
@@ -98,8 +99,8 @@ const RegisterScreen2 = ({ navigation, route }) => {
         onChangeText={setAge}
         keyboardType="numeric"
       />
-      <Text style={GlobalStyles.description}>
-        Indica tu nivel de conocimiento
+      <Text style={[GlobalStyles.description,{marginBottom:5}]}>
+        ¿Qué tanto sabes del mundo Fungi?
       </Text>
       {options.map((option) => (
         <TouchableOpacity
@@ -107,12 +108,12 @@ const RegisterScreen2 = ({ navigation, route }) => {
           style={{
             borderWidth: 1,
             borderColor: "#ccc",
-            borderRadius: 5,
+            borderRadius: 25,
             width: "80%",
             padding: 20,
             margin: 5,
             flexDirection: "row",
-            backgroundColor: userType === option.name ? "#4caf50" : "#fff",
+            backgroundColor: userType === option.name ? "#448066" : "#fff",
           }}
           onPress={() => handleSelect(option.name)}
         >
@@ -148,14 +149,6 @@ const RegisterScreen2 = ({ navigation, route }) => {
 export default RegisterScreen2;
 
 const styles = StyleSheet.create({
-  picker: {
-    width: "80%",
-    borderWidth: 2,
-    color: "white",
-    borderColor: "#204850",
-    borderRadius: 10,
-    backgroundColor: "#8B0000",
-  },
   button: {
     backgroundColor: "#204850",
     padding: 18,
@@ -174,8 +167,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   logo: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     marginRight: 30,
   },
 });
