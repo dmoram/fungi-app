@@ -48,15 +48,34 @@ const NewPostScreen = ({ navigation }) => {
 
   const handlePublish = async () => {
     const id = await getUserId();
-    const img = "";
     const likes = 0;
 
+    // Crear un objeto FormData
+    const data = new FormData();
+
+    // Agregar el contenido del post al FormData
+    data.append("content", text);
+
+    // Si hay una imagen seleccionada, agregarla al FormData
+    if (image) {
+      const localUri = image;
+      const filename = localUri.split("/").pop();
+      const match = /\.(\w+)$/.exec(filename);
+      const type = match ? `image/${match[1]}` : `image`;
+
+      // Agregar la imagen al FormData
+      data.append("image", { uri: localUri, name: filename, type });
+    }
+
+    // Agregar el id del usuario y los likes al FormData
+    data.append("author_id", id);
+    data.append("likes", likes);
+
     axios
-      .post("/posts", {
-        content: text,
-        image: img,
-        author_id: id,
-        likes: likes,
+      .post("/posts", data, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
       })
       .then((response) => {
         setMsg("Publicación creada");
@@ -68,7 +87,6 @@ const NewPostScreen = ({ navigation }) => {
         Alert.alert("Error al publicar", "Inténtalo de nuevo más tarde.");
       });
   };
-
   return (
     <View style={GlobalStyles.container}>
       <TextInput
