@@ -13,6 +13,7 @@ import axios from "../api/axios";
 const PostList = ({ posts, onPressLike, onPressUnlike }) => {
   const renderItem = ({ item }) => (
     <Post
+      id={item.id}
       author={item.Usuario.username}
       content={item.content}
       likes={item.likes}

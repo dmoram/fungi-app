@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../../api/axios";
 
 const parseDate = (dateISO) => {
   const fecha = new Date(dateISO);
@@ -11,6 +12,7 @@ const parseDate = (dateISO) => {
 };
 
 const Post = ({
+  id,
   author,
   content,
   likes,
@@ -20,6 +22,28 @@ const Post = ({
   onPressUnlike,
 }) => {
   const [liked, setLiked] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const response = await axios.get(
+          `http://192.168.8.101:8000/api/posts/${id}`,
+          {
+            responseType: "blob",
+          }
+        );
+        const reader = new FileReader();
+        reader.readAsDataURL(response.data);
+        reader.onloadend = () => {
+          setImageUrl(reader.result);
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchImage();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -35,6 +59,9 @@ const Post = ({
       </View>
 
       <Text style={[styles.text, styles.content]}>{content}</Text>
+      <View style={styles.image}>
+        <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />
+      </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text>{likes} Likes</Text>
         <Text>0 Comentarios</Text>
@@ -55,7 +82,14 @@ const Post = ({
           }}
         >
           <View style={{ flexDirection: "row" }}>
-            <Text style={[styles.footer_text, {color: liked ? "#FFD300" : "white" }]}>Me gusta </Text>
+            <Text
+              style={[
+                styles.footer_text,
+                { color: liked ? "#FFD300" : "white" },
+              ]}
+            >
+              Me gusta{" "}
+            </Text>
             <Image
               source={require("../../assets/like_icon.png")}
               style={[styles.icon, { tintColor: liked ? "#FFD300" : "white" }]}
@@ -67,7 +101,7 @@ const Post = ({
             <Text style={styles.footer_text}>Comentar </Text>
             <Image
               source={require("../../assets/comment_icon.png")}
-              style={[styles.icon, {tintColor:'white', marginTop:3}]}
+              style={[styles.icon, { tintColor: "white", marginTop: 3 }]}
             />
           </View>
         </TouchableOpacity>
@@ -143,11 +177,18 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   date: {
-    marginLeft: 150,
+    position:'absolute',
+    right:15
   },
   footer_text: {
     color: "white",
     fontSize: 16,
+  },
+  image:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    marginVertical:20
   },
 });
 
