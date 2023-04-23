@@ -3,6 +3,7 @@ import {
   Text,
   View,
   TextInput,
+  Image,
   TouchableOpacity,
   Alert,
 } from "react-native";
@@ -12,25 +13,41 @@ import { getUserId } from "../utils/storage";
 import axios from "../api/axios";
 import Confirm from "../components/Popup/ConfirmPopup";
 import Notif from "../components/Popup/NotifPopup";
+import Upload from "../components/Popup/UploadPopup";
 import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 
 const NewPostScreen = ({ navigation }) => {
   const [text, setText] = useState("");
   const [msg, setMsg] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [image, setImage] = useState(null);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      quality: 1,
-    });
+  const pickImage = async (isCamera) => {
+    let result = null;
+    if (permission.granted) {
+      if (isCamera) {
+        result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          quality: 1,
+        });
+      } else {
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          quality: 1,
+        });
+      }
 
-    console.log(result);
+      console.log(result);
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      if (!result.canceled) {
+        setImage(result.uri);
+        setIsImgLoaded(true);
+      }
     }
   };
   const handleConfirm = () => {
@@ -94,8 +111,18 @@ const NewPostScreen = ({ navigation }) => {
         onChangeText={(text) => setText(text)}
         value={text}
       />
-      <TouchableOpacity onPress={pickImage}>
-        <Text>Subir Imagen</Text>
+      <TouchableOpacity
+        style={GlobalStyles.button}
+        onPress={() => setIsUploadOpen(true)}
+        visible={!isImgLoaded}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Text style={GlobalStyles.button_text}>Subir Imagen </Text>
+          <Image
+            style={styles.img_icon}
+            source={require("../assets/image_icon.png")}
+          />
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={[GlobalStyles.button, { marginTop: 40 }]}
@@ -116,6 +143,17 @@ const NewPostScreen = ({ navigation }) => {
       >
         <Text style={styles.text}>{msg}</Text>
       </Notif>
+      <Upload
+        visible={isUploadOpen}
+        onPressCamera={() => {
+          pickImage(true);
+          setIsUploadOpen(false);
+        }}
+        onPressFromDevice={() => {
+          pickImage(false);
+          setIsUploadOpen(false);
+        }}
+      ></Upload>
     </View>
   );
 };
@@ -139,5 +177,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+  },
+  img_icon: {
+    tintColor: "white",
+    width: 30,
+    height: 30,
   },
 });

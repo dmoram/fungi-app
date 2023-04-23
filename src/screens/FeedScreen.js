@@ -17,6 +17,7 @@ const PostList = ({ posts, onPressLike, onPressUnlike }) => {
       author={item.Usuario.username}
       content={item.content}
       likes={item.likes}
+      image={item.image}
       userType={item.Usuario.userType}
       date={item.createdAt}
       onPressUnlike={() => onPressUnlike(item.id, item.likes)}

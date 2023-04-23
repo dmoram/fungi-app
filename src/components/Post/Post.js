@@ -16,6 +16,7 @@ const Post = ({
   author,
   content,
   likes,
+  image,
   userType,
   date,
   onPressLike,
@@ -23,15 +24,13 @@ const Post = ({
 }) => {
   const [liked, setLiked] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await axios.get(
-          `http://192.168.8.101:8000/api/posts/${id}`,
-          {
-            responseType: "blob",
-          }
-        );
+        const response = await axios.get(`/posts/${id}`, {
+          responseType: "blob",
+        });
         const reader = new FileReader();
         reader.readAsDataURL(response.data);
         reader.onloadend = () => {
@@ -41,7 +40,10 @@ const Post = ({
         console.log(error);
       }
     };
-    fetchImage();
+
+    if (image && image !== "") {
+      fetchImage();
+    }
   }, []);
 
   return (
@@ -59,9 +61,17 @@ const Post = ({
       </View>
 
       <Text style={[styles.text, styles.content]}>{content}</Text>
-      <View style={styles.image}>
-        <Image source={{ uri: imageUrl }} style={{ width: 200, height: 200 }} />
-      </View>
+      {imageUrl ? (
+        <TouchableOpacity onPress={() => {}}>
+          <View style={styles.image}>
+            <Image
+              source={{ uri: imageUrl }}
+              style={{ width: 200, height: 200 }}
+            />
+          </View>
+        </TouchableOpacity>
+      ) : null}
+
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text>{likes} Likes</Text>
         <Text>0 Comentarios</Text>
@@ -107,6 +117,7 @@ const Post = ({
         </TouchableOpacity>
       </View>
     </View>
+    
   );
 };
 
@@ -151,7 +162,7 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 7,
     fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   user_type: {
     fontSize: 14,
@@ -177,18 +188,18 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   date: {
-    position:'absolute',
-    right:15
+    position: "absolute",
+    right: 15,
   },
   footer_text: {
     color: "white",
     fontSize: 16,
   },
-  image:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
-    marginVertical:20
+  image: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 20,
   },
 });
 
