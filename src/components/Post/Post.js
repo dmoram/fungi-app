@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
+import { getUserId } from "../../utils/storage";
 
 const parseDate = (dateISO) => {
   const fecha = new Date(dateISO);
@@ -20,7 +21,8 @@ const Post = ({
   userType,
   date,
   onPressLike,
-  onPressUnlike,
+  onPressDislike,
+  onPressComments,
 }) => {
   const [liked, setLiked] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
@@ -36,8 +38,17 @@ const Post = ({
         reader.onloadend = () => {
           setImageUrl(reader.result);
         };
+        axios
+          .get(`/post/${id}/${await getUserId()}`)
+          .then((response) => {
+            console.log(response.data.liked);
+            setLiked(response.data.liked);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } catch (error) {
-        console.log(error);
+        console.log("da", error);
       }
     };
 
@@ -66,7 +77,7 @@ const Post = ({
           <View style={styles.image}>
             <Image
               source={{ uri: imageUrl }}
-              style={{ width: 200, height: 200 }}
+              style={{ width: 300, height: 400 }}
             />
           </View>
         </TouchableOpacity>
@@ -81,7 +92,7 @@ const Post = ({
           onPress={async () => {
             try {
               if (liked) {
-                await onPressUnlike();
+                await onPressDislike();
               } else {
                 await onPressLike();
               }
@@ -106,7 +117,7 @@ const Post = ({
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressComments}>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.footer_text}>Comentar </Text>
             <Image
@@ -117,7 +128,6 @@ const Post = ({
         </TouchableOpacity>
       </View>
     </View>
-    
   );
 };
 
@@ -148,11 +158,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#544C0C",
     elevation: 10,
     borderRadius: 10,
-    height: 30,
+    height: 40,
     marginTop: 20,
     paddingHorizontal: 20,
     marginHorizontal: 20,
-    height: 40,
   },
   title: {
     fontSize: 18,

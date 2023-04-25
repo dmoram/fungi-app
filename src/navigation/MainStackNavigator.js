@@ -7,6 +7,7 @@ import FirstScreen from "../screens/FirstScreen";
 import RegisterScreen from "../screens/RegisterScreen1";
 import RegisterScreen2 from "../screens/RegisterScreen2";
 import NewPostScreen from "../screens/NewPostScreen";
+import CommentScreen from "../screens/CommentScreen";
 
 function ScreenOptions(title) {
   return {
@@ -52,6 +53,12 @@ const MainStackNavigator = () => {
         name="NewPostScreen"
         component={NewPostScreen}
         options={ScreenOptions('Nueva publicación')}
+        
+      />
+      <Stack.Screen
+        name="CommentScreen"
+        component={CommentScreen}
+        options={ScreenOptions('Comentarios')}
         
       />
     </Stack.Navigator>

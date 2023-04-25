@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Función para almacenar el token en AsyncStorage
-const storeToken = async (value) => {
+export const storeToken = async (value) => {
   try {
     await AsyncStorage.setItem("@token", value);
   } catch (error) {
@@ -10,7 +10,7 @@ const storeToken = async (value) => {
 };
 
 // Función para obtener el token de AsyncStorage
-const getToken = async () => {
+export const getToken = async () => {
   try {
     const value = await AsyncStorage.getItem("@token");
     if (value !== null) {
@@ -24,7 +24,7 @@ const getToken = async () => {
   }
 };
 
-const removeToken = async () => {
+export const removeToken = async () => {
   try {
     await AsyncStorage.removeItem("@token");
   } catch (error) {
@@ -33,7 +33,7 @@ const removeToken = async () => {
 };
 
 // Función para almacenar el token en AsyncStorage
-const storeUserId = async (value) => {
+export const storeUserId = async (value) => {
   try {
     await AsyncStorage.setItem("@id", value);
   } catch (error) {
@@ -42,7 +42,7 @@ const storeUserId = async (value) => {
 };
 
 // Función para obtener el token de AsyncStorage
-const getUserId = async () => {
+export const getUserId = async () => {
   try {
     const value = await AsyncStorage.getItem("@id");
     if (value !== null) {
@@ -55,5 +55,3 @@ const getUserId = async () => {
     return null;
   }
 };
-
-export { storeToken, getToken, storeUserId, getUserId, removeToken };

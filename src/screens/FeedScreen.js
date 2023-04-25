@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import Post from "../components/Post/Post";
 import axios from "../api/axios";
+import { getUserId } from "../utils/storage";
 
-const PostList = ({ posts, onPressLike, onPressUnlike }) => {
+const PostList = ({ posts, onPressLike, onPressDislike, onPressComments }) => {
   const renderItem = ({ item }) => (
     <Post
       id={item.id}
@@ -20,8 +21,9 @@ const PostList = ({ posts, onPressLike, onPressUnlike }) => {
       image={item.image}
       userType={item.Usuario.userType}
       date={item.createdAt}
-      onPressUnlike={() => onPressUnlike(item.id, item.likes)}
-      onPressLike={() => onPressLike(item.id, item.likes)}
+      onPressDislike={() => onPressDislike(item.id, "dislike")}
+      onPressLike={() => onPressLike(item.id, "like")}
+      onPressComments={() => onPressComments(item.id)}
     />
   );
 
@@ -44,26 +46,25 @@ function FeedScreen({ navigation }) {
       const response = await axios.get("/posts");
       setPosts(response.data.posts);
     } catch (error) {
-      console.log(error);
+      console.log("da",error);
     }
   };
 
-  const decreaseLikes = async (id, likes) => {
+  const updateLikes = async (id, action) => {
     try {
-      const response = await axios.put("/posts", { id, likes: likes - 1 });
+      const response = await axios.put("/posts", {
+        post_id: id,
+        user_id: await getUserId(),
+        action,
+      });
       fetchPosts(); // Actualizamos la lista de posts
     } catch (error) {
       console.log(error);
     }
   };
 
-  const increaseLikes = async (id, likes) => {
-    try {
-      const response = await axios.put("/posts", { id, likes: likes + 1 });
-      fetchPosts(); // Actualizamos la lista de posts
-    } catch (error) {
-      console.log(error);
-    }
+  const seeComments = (post_id) => {
+    navigation.navigate("CommentScreen", { post_id: post_id });
   };
 
   useEffect(() => {
@@ -98,8 +99,9 @@ function FeedScreen({ navigation }) {
       </TouchableOpacity>
       <PostList
         posts={posts}
-        onPressLike={increaseLikes}
-        onPressUnlike={decreaseLikes}
+        onPressLike={updateLikes}
+        onPressDislike={updateLikes}
+        onPressComments={seeComments}
       />
     </View>
   );
