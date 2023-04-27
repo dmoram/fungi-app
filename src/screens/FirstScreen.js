@@ -1,39 +1,49 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 
 const FirstScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image
+      <ImageBackground
         source={require("../assets/hongo_bg.jpg")}
         style={styles.image}
-      />
-      <Text style={styles.title}>
-        ¡Bienvenido a la comunidad de los amantes de los hongos!{" "}
-      </Text>
-      <View style={styles.box}>
-        <Text style={styles.text}>
-          Explora y aprende sobre los hongos más fascinantes del reino fungi,
-          conecta con otros apasionados como tú y comparte tus experiencias.{" "}
+      >
+        <Text style={styles.title}>
+          ¡Bienvenido a la comunidad de los amantes de los hongos!{" "}
         </Text>
-        <Text style={styles.text}>¡Regístrate ahora para comenzar!</Text>
-      </View>
-      <TouchableOpacity
-        style={[styles.button,{ marginTop: 15 }]}
-        onPress={() => {
-          navigation.navigate("Login");
-        }}
-      >
-        <Text style={styles.buttonText}>Iniciar sesión</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("RegisterScreen");
-        }}
-      >
-        <Text style={styles.buttonText}>Regístrate</Text>
-      </TouchableOpacity>
+        <View style={styles.box}>
+          <Text style={styles.text}>
+            Explora y aprende sobre los hongos más fascinantes del reino fungi,
+            conecta con otros apasionados como tú y comparte tus experiencias.{" "}
+          </Text>
+          <Text style={styles.text}>¡Regístrate ahora para comenzar!</Text>
+        </View>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[styles.button, { marginTop: 15 }]}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+          >
+            <Text style={styles.buttonText}>Iniciar sesión</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("RegisterScreen");
+            }}
+          >
+            <Text style={styles.buttonText}>Regístrate</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -52,6 +62,7 @@ const styles = StyleSheet.create({
     color: "white",
     paddingHorizontal: 5,
     marginTop: 120,
+    textAlign:"center"
   },
   text: {
     fontSize: 20,
@@ -59,18 +70,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     marginHorizontal: 10,
     marginTop: 40,
+    textAlign: "center",
   },
   image: {
-    position: "absolute",
-    resizeMode: "contain",
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    width: "100%",
   },
   button: {
     backgroundColor: "#0D4A4D",
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
-    width: "40%",
-    elevation: 5
+    elevation: 5,
   },
   buttonText: {
     color: "#fff",
@@ -85,4 +98,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     paddingVertical: 20,
   },
+  buttonsContainer:{
+    alignItems:"center"
+  }
 });

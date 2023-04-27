@@ -6,8 +6,10 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  Button,
+  StatusBar,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GlobalStyles from "../styles/GlobalStyles";
 import { getUserId } from "../utils/storage";
 import axios from "../api/axios";
@@ -16,40 +18,24 @@ import Notif from "../components/Popup/NotifPopup";
 import Upload from "../components/Popup/UploadPopup";
 import * as ImagePicker from "expo-image-picker";
 import { Camera } from "expo-camera";
+import CameraComponent from "../components/Camera/CameraComponent";
 
 const NewPostScreen = ({ navigation }) => {
   const [text, setText] = useState("");
   const [msg, setMsg] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [image, setImage] = useState(null);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  const pickImage = async (isCamera) => {
-    let result = null;
-    if (permission.granted) {
-      if (isCamera) {
-        result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          quality: 1,
-        });
-      } else {
-        result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          quality: 1,
-        });
-      }
-
-      console.log(result);
-
-      if (!result.canceled) {
-        setImage(result.uri);
-        setIsImgLoaded(true);
-      }
-    }
+  const saveImage = (image) => {
+    setImage(image); // solo almacena el URI de la imagen seleccionada
+    setIsImgLoaded(true);
+    setIsCameraOpen(false);
+    console.log(image);
   };
+
   const handleConfirm = () => {
     // Mostrar la ventana emergente de confirmación
     setIsPopupOpen(true);
@@ -113,7 +99,7 @@ const NewPostScreen = ({ navigation }) => {
       />
       <TouchableOpacity
         style={GlobalStyles.button}
-        onPress={() => setIsUploadOpen(true)}
+        onPress={() => setIsCameraOpen(true)}
         visible={!isImgLoaded}
       >
         <View style={{ flexDirection: "row" }}>
@@ -143,17 +129,7 @@ const NewPostScreen = ({ navigation }) => {
       >
         <Text style={styles.text}>{msg}</Text>
       </Notif>
-      <Upload
-        visible={isUploadOpen}
-        onPressCamera={() => {
-          pickImage(true);
-          setIsUploadOpen(false);
-        }}
-        onPressFromDevice={() => {
-          pickImage(false);
-          setIsUploadOpen(false);
-        }}
-      ></Upload>
+      <CameraComponent visible={isCameraOpen} onPictureTaken={saveImage} />
     </View>
   );
 };
@@ -161,6 +137,14 @@ const NewPostScreen = ({ navigation }) => {
 export default NewPostScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
   input: {
     height: 200,
     width: "90%",
