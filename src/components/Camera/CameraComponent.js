@@ -7,12 +7,14 @@ import {
   StyleSheet,
   Image,
   Button,
+  ActivityIndicator,
 } from "react-native";
 import { Camera } from "expo-camera";
 
 export default function CameraComponent({ onPictureTaken, visible }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const cameraRef = useRef(null);
 
   useEffect(() => {
@@ -31,15 +33,17 @@ export default function CameraComponent({ onPictureTaken, visible }) {
 
   const handlePictureTaken = async () => {
     if (cameraRef.current) {
+      setLoading(true); // activar vista de carga
       const options = { quality: 1, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
       setImage(data);
+      setLoading(false); // desactivar vista de carga
     }
   };
 
   const handlePictureSend = () => {
-    onPictureTaken(image.uri);
     setImage(null);
+    onPictureTaken(image.uri);
   };
 
   const handlePictureCancel = () => {
@@ -99,6 +103,13 @@ export default function CameraComponent({ onPictureTaken, visible }) {
           </View>
         </View>
       )}
+
+      {/* Vista de carga */}
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
     </Modal>
   );
 }
@@ -132,5 +143,15 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     tintColor: "white",
+  },
+  loadingContainer: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });

@@ -4,12 +4,11 @@ import axios from "../../api/axios";
 import { getUserId } from "../../utils/storage";
 
 const parseDate = (dateISO) => {
-  const fecha = new Date(dateISO);
-  const dia = fecha.getDate().toString().padStart(2, "0");
-  const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-  const anio = fecha.getFullYear().toString();
-
-  return `${dia}/${mes}/${anio}`;
+  const fechaUTC = new Date(dateISO);
+  const fechaChile = fechaUTC.toLocaleString("es-CL", {
+    timeZone: "America/Santiago",
+  });
+  return fechaChile;
 };
 
 const Post = ({
@@ -17,6 +16,7 @@ const Post = ({
   author,
   content,
   likes,
+  comments,
   image,
   userType,
   date,
@@ -29,32 +29,32 @@ const Post = ({
 
   useEffect(() => {
     const fetchImage = async () => {
-      try {
-        const response = await axios.get(`/posts/${id}`, {
-          responseType: "blob",
-        });
-        const reader = new FileReader();
-        reader.readAsDataURL(response.data);
-        reader.onloadend = () => {
-          setImageUrl(reader.result);
-        };
-        axios
-          .get(`/post/${id}/${await getUserId()}`)
-          .then((response) => {
-            console.log(response.data.liked);
-            setLiked(response.data.liked);
-          })
-          .catch((error) => {
-            console.error(error);
+      if (image != null && image != "") {
+        try {
+          const response = await axios.get(`/posts/${id}`, {
+            responseType: "blob",
           });
-      } catch (error) {
-        console.log("da", error);
+          const reader = new FileReader();
+          reader.readAsDataURL(response.data);
+          reader.onloadend = () => {
+            setImageUrl(reader.result);
+          };
+          axios
+            .get(`/post/${id}/${await getUserId()}`)
+            .then((response) => {
+              console.log(response.data.liked);
+              setLiked(response.data.liked);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } catch (error) {
+          console.log("da", error);
+        }
       }
     };
 
-    if (image && image !== "") {
-      fetchImage();
-    }
+    fetchImage();
   }, []);
 
   return (
@@ -85,7 +85,7 @@ const Post = ({
 
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text>{likes} Likes</Text>
-        <Text>0 Comentarios</Text>
+        <Text>{comments} Comentarios</Text>
       </View>
       <View style={styles.footer}>
         <TouchableOpacity

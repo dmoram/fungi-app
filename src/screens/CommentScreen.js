@@ -21,6 +21,7 @@ const CommentList = ({ comments, onPressLike, onPressDislike }) => {
       author={item.Usuario.username}
       content={item.content}
       likes={item.likes}
+      comments={item.comments}
       userType={item.Usuario.userType}
       date={item.createdAt}
       //onPressDislike={() => onPressDislike(item.id, "dislike")}

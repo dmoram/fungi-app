@@ -10,6 +10,7 @@ import {
 import Post from "../components/Post/Post";
 import axios from "../api/axios";
 import { getUserId } from "../utils/storage";
+import { Picker } from "@react-native-picker/picker";
 
 const PostList = ({ posts, onPressLike, onPressDislike, onPressComments }) => {
   const renderItem = ({ item }) => (
@@ -18,6 +19,7 @@ const PostList = ({ posts, onPressLike, onPressDislike, onPressComments }) => {
       author={item.Usuario.username}
       content={item.content}
       likes={item.likes}
+      comments={item.comments}
       image={item.image}
       userType={item.Usuario.userType}
       date={item.createdAt}
@@ -38,21 +40,29 @@ const PostList = ({ posts, onPressLike, onPressDislike, onPressComments }) => {
   );
 };
 
+const orderPostsByDate = (posts) => {
+  return posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+};
+
+const orderPostsByRelevance = (posts) => {
+  return posts.sort((a, b) => b.likes - a.likes);
+};
 function FeedScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
+  const [orderBy, setOrderBy] = useState("recent");
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("/posts");
+      const response = await  axios.get("/posts");
       setPosts(response.data.posts);
     } catch (error) {
-      console.log("da",error);
+      console.log("da", error);
     }
   };
 
   const updateLikes = async (id, action) => {
     try {
-      const response = await axios.put("/posts", {
+      const response = await axios.put("/posts/likes", {
         post_id: id,
         user_id: await getUserId(),
         action,
@@ -97,8 +107,26 @@ function FeedScreen({ navigation }) {
           style={styles.create_post}
         />
       </TouchableOpacity>
+      <View style={styles.orderContainer}>
+        <Text style={{textAlign:"left"}}>Publicaciones</Text>
+        <Picker
+          selectedValue={orderBy}
+          onValueChange={(itemValue, itemIndex) => {
+            setOrderBy(itemValue);
+          }}
+          style={styles.picker}
+          prompt="Seleccione"
+        >
+          <Picker.Item label="Más recientes" value="recent" />
+          <Picker.Item label="Más relevantes" value="relevant" />
+        </Picker>
+      </View>
       <PostList
-        posts={posts}
+        posts={
+          orderBy === "recent"
+            ? orderPostsByDate(posts)
+            : orderPostsByRelevance(posts)
+        }
         onPressLike={updateLikes}
         onPressDislike={updateLikes}
         onPressComments={seeComments}
@@ -114,6 +142,15 @@ const styles = StyleSheet.create({
     marginTop: 15,
     padding: 10,
   },
+  picker: {
+    width:"100%",
+    borderWidth: 2,
+    color: "white",
+    borderColor: "#204850",
+    borderRadius: 10,
+    backgroundColor: "teal",
+    
+  },
   container: {
     flex: 1,
     backgroundColor: "#F9F9F8",
@@ -125,4 +162,13 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  orderContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 20,
+    width:"100%",
+    marginBottom: 5,
+  },
+  
 });
