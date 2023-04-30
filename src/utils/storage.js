@@ -41,6 +41,7 @@ export const storeUserId = async (value) => {
   }
 };
 
+
 // Función para obtener el token de AsyncStorage
 export const getUserId = async () => {
   try {

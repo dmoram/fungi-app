@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import axios from "../api/axios";
-import { storeToken, storeUserId } from "../utils/storage";
+import { storeToken, storeUserId} from "../utils/storage";
 import GlobalStyles from "../styles/GlobalStyles";
 import Notif from "../components/Popup/NotifPopup";
 import { validarEmail } from "../utils/utils";
@@ -65,7 +65,6 @@ const LoginScreen = ({ navigation }) => {
                 // Se almacena el token de usuario
                 storeToken(response.data.token);
                 storeUserId(response.data.id.toString());
-
                 navigation.reset({
                   index: 0,
                   routes: [{ name: "Tabs" }],

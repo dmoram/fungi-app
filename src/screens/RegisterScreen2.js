@@ -111,6 +111,7 @@ const RegisterScreen2 = ({ navigation, route }) => {
             borderRadius: 25,
             width: "80%",
             padding: 20,
+            elevation:6,
             margin: 5,
             flexDirection: "row",
             backgroundColor: userType === option.name ? "#448066" : "#fff",

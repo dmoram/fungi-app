@@ -53,7 +53,7 @@ function FeedScreen({ navigation }) {
 
   const fetchPosts = async () => {
     try {
-      const response = await  axios.get("/posts");
+      const response = await axios.get("/posts");
       setPosts(response.data.posts);
     } catch (error) {
       console.log("da", error);
@@ -102,23 +102,37 @@ function FeedScreen({ navigation }) {
         style={styles.button}
         onPress={() => navigation.navigate("NewPostScreen")}
       >
-        <Image
-          source={require("../assets/create_post.png")}
-          style={styles.create_post}
-        />
+        <View style={styles.createButton}>
+          <Text style={{ alignSelf: "center", fontSize: 18, color:"white" }}>
+            Crear publicación
+          </Text>
+          <Image
+            source={require("../assets/create_post.png")}
+            style={styles.createIcon}
+          />
+        </View>
       </TouchableOpacity>
       <View style={styles.orderContainer}>
-        <Text style={{textAlign:"left"}}>Publicaciones</Text>
+        <Text style={{ marginLeft: 20, fontSize: 18 }}>Ordenar por</Text>
         <Picker
           selectedValue={orderBy}
           onValueChange={(itemValue, itemIndex) => {
             setOrderBy(itemValue);
           }}
           style={styles.picker}
+          mode="dropdown"
           prompt="Seleccione"
         >
-          <Picker.Item label="Más recientes" value="recent" />
-          <Picker.Item label="Más relevantes" value="relevant" />
+          <Picker.Item
+            style={{ fontSize: 18 }}
+            label="Más recientes"
+            value="recent"
+          />
+          <Picker.Item
+            style={{ fontSize: 18 }}
+            label="Más relevantes"
+            value="relevant"
+          />
         </Picker>
       </View>
       <PostList
@@ -143,13 +157,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   picker: {
-    width:"100%",
+    width: "60%",
     borderWidth: 2,
-    color: "white",
     borderColor: "#204850",
     borderRadius: 10,
-    backgroundColor: "teal",
-    
+    backgroundColor: "#BEBEBE",
   },
   container: {
     flex: 1,
@@ -158,17 +170,26 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  create_post: {
-    width: 50,
-    height: 50,
+  createIcon: {
+    width: 40,
+    height: 40,
+    tintColor:"white"
   },
+  createButton: {
+    flexDirection: "row",
+    alignItems: "space-between",
+    justifyContent: "center",
+    backgroundColor: "#204850",
+    borderRadius: 20,
+    padding: 10,
+  },
+
   orderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 20,
-    width:"100%",
+    width: "100%",
     marginBottom: 5,
   },
-  
 });

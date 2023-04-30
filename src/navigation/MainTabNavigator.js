@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from "../screens/FeedScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import FungiSensorScreen from "../components/FungiSensor/FungiSensorScreen";
+import FungiSensorScreen from "../screens/FungiSensorScreen";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 
 function ScreenOptions(title, label, icon) {

@@ -12,7 +12,7 @@ const FirstScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../assets/hongo_bg.jpg")}
+        source={require("../assets/fungi.png")}
         style={styles.image}
       >
         <Text style={styles.title}>
@@ -60,8 +60,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     color: "white",
+    fontWeight:"bold",
     paddingHorizontal: 5,
-    marginTop: 120,
+    marginTop: 90,
     textAlign:"center"
   },
   text: {
@@ -93,9 +94,9 @@ const styles = StyleSheet.create({
   },
   box: {
     marginTop: 20,
-    backgroundColor: "#3D1A50",
+    backgroundColor: "#2D3200",
     borderRadius: 10,
-    opacity: 0.75,
+    opacity: 0.8,
     paddingVertical: 20,
   },
   buttonsContainer:{

@@ -39,22 +39,26 @@ const Post = ({
           reader.onloadend = () => {
             setImageUrl(reader.result);
           };
-          axios
-            .get(`/post/${id}/${await getUserId()}`)
-            .then((response) => {
-              console.log(response.data.liked);
-              setLiked(response.data.liked);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
         } catch (error) {
           console.log("da", error);
         }
       }
     };
 
+    const fetchLikes = async () => {
+      const user_id = await getUserId();
+      console.log(id, user_id)
+      try {
+        const response = await axios.get("/posts/like/", {post_id: id, user_id: user_id,});
+        console.log(response.data)
+        setLiked(response.data.liked);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchImage();
+    fetchLikes();
   }, []);
 
   return (

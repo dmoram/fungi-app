@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import GlobalStyles from "../styles/GlobalStyles";
 import Notif from "../components/Popup/NotifPopup";
@@ -20,12 +20,8 @@ const RegisterScreen = ({ navigation }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleConfirm = () => {
-    // Mostrar la ventana emergente de confirmación
     setIsPopupOpen(false);
   };
-  useEffect(() => {
-    console.log(selectedGender);
-  }, [selectedGender]);
 
   const handleRegister = () => {
     if (!username) {
@@ -95,6 +91,7 @@ const RegisterScreen = ({ navigation }) => {
         }}
         style={styles.picker}
         prompt="Seleccione"
+        mode="dropdown"
       >
         <Picker.Item label="Masculino" value="masculino" />
         <Picker.Item label="Femenino" value="femenino" />
