@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { getUserId, removeToken } from "../utils/storage";
+import { getUserId, removeToken, getToken } from "../utils/storage";
 import axios from "../api/axios";
 import GlobalStyles from "../styles/GlobalStyles";
 
 const deleteUser = async (navigation) => {
   try {
     const id = await getUserId();
-    console.log(id);
+    const token = await getToken();
     axios
       .delete("/usuarios/" + id)
       .then((response) => {
@@ -32,24 +32,32 @@ const deleteUser = async (navigation) => {
 };
 
 const handleLogout = async ({ navigation }) => {
-  try {
-    await removeToken();
-    console.log("Logged out");
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Login" }],
-    });
-  } catch (error) {
-    console.log("Error al cerrar sesión", error);
-  }
+  const user_id = await getUserId();
+  const token = await getToken();
+  console.log(user_id, token);
+  axios
+    .post(`usuarios/logout/${user_id}`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((response) => {
+      console.log("Logged out");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    })
+    .catch((error) => console.log("Error al cerrar sesión", error));
 };
 
 function ProfileScreen({ navigation }) {
   const [userData, setUserData] = useState({});
 
   const getUserData = async () => {
+    const token = await getToken();
     axios
-      .get(`/usuarios/${await getUserId()}`)
+      .get(`/usuarios/${await getUserId()}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         setUserData(response.data);
       })
@@ -67,13 +75,15 @@ function ProfileScreen({ navigation }) {
           source={require("../assets/profile_icon.png")}
           style={styles.image}
         ></Image>
-        <Text style={{ fontSize: 30, fontWeight: "bold", color:"white"}}>
+        <Text style={{ fontSize: 30, fontWeight: "bold", color: "white" }}>
           {userData.username}
         </Text>
-        <Text style={{ fontSize: 20 , color:"white"}}>
+        <Text style={{ fontSize: 20, color: "white" }}>
           {userData.fullName}, {userData.age} años
         </Text>
-        <Text style={{ fontSize: 20 , color:"white"}}>{userData.userType}</Text>
+        <Text style={{ fontSize: 20, color: "white" }}>
+          {userData.userType}
+        </Text>
       </View>
       <View style={styles.optionsContainer}>
         <TouchableOpacity
@@ -113,10 +123,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#727D15",
     width: "95%",
     alignItems: "center",
-    elevation:9,
-    borderRadius:10
+    elevation: 9,
+    borderRadius: 10,
   },
-  optionsContainer:{
-    flex:1
-  }
+  optionsContainer: {
+    flex: 1,
+  },
 });
