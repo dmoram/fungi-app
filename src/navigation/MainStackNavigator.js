@@ -8,6 +8,8 @@ import RegisterScreen from "../screens/RegisterScreen1";
 import RegisterScreen2 from "../screens/RegisterScreen2";
 import NewPostScreen from "../screens/NewPostScreen";
 import CommentScreen from "../screens/CommentScreen";
+import NewFungiRecordScreen from "../screens/NewFungiRecordScreen";
+import FungiRecordScreen from "../screens/FungiRecordsScreen";
 
 function ScreenOptions(title) {
   return {
@@ -59,6 +61,18 @@ const MainStackNavigator = () => {
         name="CommentScreen"
         component={CommentScreen}
         options={ScreenOptions('Comentarios')}
+        
+      />
+      <Stack.Screen
+        name="NewFungiRecordScreen"
+        component={NewFungiRecordScreen}
+        options={ScreenOptions('Nuevo registro Fungi')}
+        
+      />
+      <Stack.Screen
+        name="FungiRecordsScreen"
+        component={FungiRecordScreen}
+        options={ScreenOptions('Registros Fungi')}
         
       />
     </Stack.Navigator>

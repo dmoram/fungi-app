@@ -47,9 +47,9 @@ const Post = ({
 
     const fetchLikes = async () => {
       const user_id = await getUserId();
-      console.log(id, user_id)
+      //console.log(id, user_id)
       try {
-        const response = await axios.get("/posts/like/", {post_id: id, user_id: user_id,});
+        const response = await axios.get("/posts/like", {body: {post_id: id, user_id: user_id}});
         console.log(response.data)
         setLiked(response.data.liked);
       } catch (error) {

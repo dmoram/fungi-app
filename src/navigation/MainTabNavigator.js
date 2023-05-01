@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from "../screens/FeedScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import FungiSensorScreen from "../screens/FungiSensorScreen";
+import HumanFungiScreen from "../screens/HumanFungiScreen";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 
 function ScreenOptions(title, label, icon) {
@@ -48,12 +48,12 @@ function MyTabs() {
       <Tab.Screen
         name="Feed"
         component={FeedScreen}
-        options={ScreenOptions("Comunidad", "Comunidad", require("../assets/forum.png"))}
+        options={ScreenOptions("Micelio", "Micelio", require("../assets/forum.png"))}
       />
       <Tab.Screen
         name="Fungi"
-        component={FungiSensorScreen}
-        options={ScreenOptions("Fungi", "Fungi", require("../assets/hongo_icon.png"))}
+        component={HumanFungiScreen}
+        options={ScreenOptions("Humano-Hongo", "Humano-Hongo", require("../assets/hongo_icon.png"))}
       />
 
       <Tab.Screen

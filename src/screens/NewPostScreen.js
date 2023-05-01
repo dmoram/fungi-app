@@ -46,64 +46,80 @@ const NewPostScreen = ({ navigation }) => {
     setIsPopupOpen(false);
   };
 
-  const handlePublish = async () => {
-    const id = await getUserId();
-    const likes = 0;
+  const closePopups = () =>{
+    setIsNotifOpen(false)
+    setIsPopupOpen(false)
+  }
 
-    // Crear un objeto FormData
-    const data = new FormData();
-
-    // Agregar el contenido del post al FormData
-    data.append("content", text);
-
-    // Si hay una imagen seleccionada, agregarla al FormData
-    if (image) {
-      const localUri = image;
-      const filename = localUri.split("/").pop();
-      const match = /\.(\w+)$/.exec(filename);
-      const type = match ? `image/${match[1]}` : `image`;
-
-      // Agregar la imagen al FormData
-      data.append("image", { uri: localUri, name: filename, type });
+  const handlePublish = async ({navigation}) => {
+    if(!text){
+      setMsg("Por favor, brinda una breve descripción de tu publicación")
+      setIsNotifOpen(true)
+    }else{
+      const id = await getUserId();
+      const likes = 0;
+  
+      // Crear un objeto FormData
+      const data = new FormData();
+  
+      // Agregar el contenido del post al FormData
+      data.append("content", text);
+  
+      // Si hay una imagen seleccionada, agregarla al FormData
+      if (image) {
+        const localUri = image;
+        const filename = localUri.split("/").pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
+  
+        // Agregar la imagen al FormData
+        data.append("image", { uri: localUri, name: filename, type });
+      }
+  
+      // Agregar el id del usuario y los likes al FormData
+      data.append("author_id", id);
+      data.append("likes", likes);
+  
+      axios
+        .post("/posts", data, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          setMsg("Publicación creada");
+          setIsNotifOpen(true);
+        })
+        .catch((error) => {
+          // Si la solicitud falla, muestra un mensaje de error
+          console.error(error);
+          Alert.alert("Error al publicar", "Inténtalo de nuevo más tarde.");
+        });
     }
-
-    // Agregar el id del usuario y los likes al FormData
-    data.append("author_id", id);
-    data.append("likes", likes);
-
-    axios
-      .post("/posts", data, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        setMsg("Publicación creada");
-        setIsNotifOpen(true);
-      })
-      .catch((error) => {
-        // Si la solicitud falla, muestra un mensaje de error
-        console.error(error);
-        Alert.alert("Error al publicar", "Inténtalo de nuevo más tarde.");
-      });
   };
   return (
     <View style={GlobalStyles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Escribe aquí"
+        placeholder=" Escribe aquí"
         multiline={true}
         numberOfLines={10}
         onChangeText={(text) => setText(text)}
         value={text}
       />
+      {image && (
+        <View style={{flexDirection:"row", width:"90%"}}>
+          <Text style={{textAlign:"left", fontSize:16, justifyContent:"center", marginLeft:3}}>Foto cargada correctamente</Text>
+          <Image style={{height:25, width:25, marginLeft:7}} source={require("../assets/ok_icon.png")}/>
+        </View>
+      )}
       <TouchableOpacity
-        style={GlobalStyles.button}
+        style={[GlobalStyles.button,{marginTop:30}]}
         onPress={() => setIsCameraOpen(true)}
         visible={!isImgLoaded}
       >
         <View style={{ flexDirection: "row" }}>
-          <Text style={GlobalStyles.button_text}>Subir Imagen </Text>
+          <Text style={GlobalStyles.button_text}>Subir foto </Text>
           <Image
             style={styles.img_icon}
             source={require("../assets/image_icon.png")}
@@ -125,7 +141,7 @@ const NewPostScreen = ({ navigation }) => {
       </Confirm>
       <Notif
         visible={isNotifOpen}
-        onConfirm={() => navigation.navigate("Tabs")}
+        onConfirm={() => {text ? navigation.navigate("Tabs") : closePopups()}}
       >
         <Text style={styles.text}>{msg}</Text>
       </Notif>
