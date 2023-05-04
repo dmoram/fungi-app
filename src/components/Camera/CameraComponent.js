@@ -6,12 +6,11 @@ import {
   Modal,
   StyleSheet,
   Image,
-  Button,
   ActivityIndicator,
 } from "react-native";
 import { Camera } from "expo-camera";
 
-export default function CameraComponent({ onPictureTaken, visible }) {
+export default function CameraComponent({ onPictureTaken, visible, onClose }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -57,6 +56,38 @@ export default function CameraComponent({ onPictureTaken, visible }) {
       visible={visible}
       onRequestClose={() => {}}
     >
+      <View
+        style={{
+          backgroundColor: "#370837",
+          flexDirection: "row",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity onPress={onClose} style={{ marginLeft: 10, marginVertical:7 }}>
+          <Image
+            style={{
+              tintColor: "white",
+              width: 35,
+              height: 35,
+            }}
+            source={require("../../assets/close_icon.png")}
+          />
+        </TouchableOpacity>
+
+        <Text
+          style={{
+            flex: 1,
+            color: "white",
+            fontSize: 20,
+            textAlign: "center",
+            marginRight:50
+          }}
+        >
+          Cámara
+        </Text>
+      </View>
+
       {!image ? (
         <View style={{ flex: 1 }}>
           <Camera style={{ flex: 1, paddingBottom: 100 }} ref={cameraRef}>
@@ -65,6 +96,10 @@ export default function CameraComponent({ onPictureTaken, visible }) {
                 style={styles.button}
                 onPress={handlePictureTaken}
               >
+                <Image
+                  style={[styles.icon, { width: 60, height: 60 }]}
+                  source={require("../../assets/take_pic_icon.png")}
+                />
                 <Text
                   style={{ fontSize: 18, marginBottom: 10, color: "white" }}
                 >
@@ -86,19 +121,24 @@ export default function CameraComponent({ onPictureTaken, visible }) {
               { flexDirection: "row", justifyContent: "space-evenly" },
             ]}
           >
+            <TouchableOpacity onPress={handlePictureCancel}>
+              <Image
+                source={require("../../assets/repeat_icon.png")}
+                style={[styles.icon, { width: 64, height: 64 }]}
+              ></Image>
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Reintentar
+              </Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={handlePictureSend}>
               <Image
                 source={require("../../assets/tick_icon.png")}
-                style={styles.icon}
+                style={[
+                  styles.icon,
+                  { alignSelf: "center", marginVertical: 5 },
+                ]}
               ></Image>
               <Text style={{ color: "white" }}>Seleccionar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePictureCancel}>
-              <Image
-                source={require("../../assets/cancel_icon.png")}
-                style={styles.icon}
-              ></Image>
-              <Text style={{ color: "white" }}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,13 +165,11 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     marginBottom: 10,
-    backgroundColor: "black",
     padding: 10,
     borderRadius: 5,
   },
   container: {
     flex: 1,
-    position: "absolute",
     width: "100%",
     height: "100%",
   },

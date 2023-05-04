@@ -9,14 +9,14 @@ const FungiSensorScreen = ({navigation}) => {
         esta sección
       </Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("NewFungiRecordScreen")}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("NewFungiRecordScreen1")}>
           <Text style={styles.buttonText}>Agregar registro fungi</Text>
           <Image
             source={require("../assets/hh_1.png")}
             style={styles.image}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: "#788E91" }]} onPress={() => navigation.navigate("FungiRecordsScreen")}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: "#788E91" }]} onPress={() => navigation.navigate("FungiRecordsScreen2")}>
           <Text style={styles.buttonText}>Ver registros</Text>
         </TouchableOpacity>
       </View>

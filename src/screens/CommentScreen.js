@@ -24,8 +24,8 @@ const CommentList = ({ comments, onPressLike, onPressDislike }) => {
       comments={item.comments}
       userType={item.Usuario.userType}
       date={item.createdAt}
-      //onPressDislike={() => onPressDislike(item.id, "dislike")}
-      //onPressLike={() => onPressLike(item.id, "like")}
+      onPressDislike={() => onPressDislike(item.id, "dislike")}
+      onPressLike={() => onPressLike(item.id, "like")}
     />
   );
   return (
@@ -81,8 +81,8 @@ const CommentScreen = ({ route, navigation }) => {
 
   const updateLikes = async (id, action) => {
     try {
-      const response = await axios.put("/posts", {
-        post_id: id,
+      const response = await axios.put("/comments/likes", {
+        comment_id: id,
         user_id: await getUserId(),
         action,
       });
@@ -98,13 +98,18 @@ const CommentScreen = ({ route, navigation }) => {
 
   return (
     <View style={GlobalStyles.container}>
-      <CommentList comments={comments} />
+      <CommentList
+        comments={comments}
+        onPressLike={updateLikes}
+        onPressDislike={updateLikes}
+      />
       <View style={styles.input_container}>
         <TextInput
           placeholder={"Escribe un comentario"}
           multiline={true}
           style={styles.input}
-          onChangeText={(text) => setComment(text)} 
+          onChangeText={(text) => setComment(text)}
+          value={comment}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleCommentSubmit}>
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "black",
     marginLeft: 10,
-    paddingLeft:10
+    paddingLeft: 10,
   },
   input_container: {
     width: "100%",

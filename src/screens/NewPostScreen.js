@@ -145,7 +145,7 @@ const NewPostScreen = ({ navigation }) => {
       >
         <Text style={styles.text}>{msg}</Text>
       </Notif>
-      <CameraComponent visible={isCameraOpen} onPictureTaken={saveImage} />
+      <CameraComponent visible={isCameraOpen} onPictureTaken={saveImage} onClose={() => setIsCameraOpen(false)}/>
     </View>
   );
 };

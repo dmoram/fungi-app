@@ -8,16 +8,18 @@ import RegisterScreen from "../screens/RegisterScreen1";
 import RegisterScreen2 from "../screens/RegisterScreen2";
 import NewPostScreen from "../screens/NewPostScreen";
 import CommentScreen from "../screens/CommentScreen";
-import NewFungiRecordScreen from "../screens/NewFungiRecordScreen";
-import FungiRecordScreen from "../screens/FungiRecordsScreen";
+import NewFungiRecordScreen1 from "../screens/NewFungiRecordScreen1";
+import NewFungiRecordScreen2 from "../screens/NewFungiRecordScreen2";
+import NewFungiRecordScreen3 from "../screens/NewFungiRecordScreen3";
+import FungiRecordsScreen from "../screens/FungiRecordsScreen";
 
 function ScreenOptions(title) {
   return {
     headerShown: true,
-    headerTintColor: 'white',
-    headerStyle: { backgroundColor: '#370837' },
+    headerTintColor: "white",
+    headerStyle: { backgroundColor: "#370837" },
     headerTitle: title,
-    headerTitleAlign: 'center'
+    headerTitleAlign: "center",
   };
 }
 
@@ -34,17 +36,17 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="RegisterScreen"
         component={RegisterScreen}
-        options={ScreenOptions('Registro: Paso 1')}
+        options={ScreenOptions("Registro: Paso 1")}
       />
       <Stack.Screen
         name="RegisterScreen2"
         component={RegisterScreen2}
-        options={ScreenOptions('Registro: Paso 2')}
+        options={ScreenOptions("Registro: Paso 2")}
       />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={ScreenOptions('Inicio de sesión')}
+        options={ScreenOptions("Inicio de sesión")}
       />
       <Stack.Screen
         name="Tabs"
@@ -54,31 +56,35 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="NewPostScreen"
         component={NewPostScreen}
-        options={ScreenOptions('Nueva publicación')}
-        
+        options={ScreenOptions("Nueva publicación")}
       />
       <Stack.Screen
         name="CommentScreen"
         component={CommentScreen}
-        options={ScreenOptions('Comentarios')}
-        
-      />
-      <Stack.Screen
-        name="NewFungiRecordScreen"
-        component={NewFungiRecordScreen}
-        options={ScreenOptions('Nuevo registro Fungi')}
-        
+        options={ScreenOptions("Comentarios")}
       />
       <Stack.Screen
         name="FungiRecordsScreen"
-        component={FungiRecordScreen}
-        options={ScreenOptions('Registros Fungi')}
-        
+        component={FungiRecordsScreen}
+        options={ScreenOptions("Registros Fungi")}
+      />
+      <Stack.Screen
+        name="NewFungiRecordScreen1"
+        component={NewFungiRecordScreen1}
+        options={ScreenOptions("Nuevo registro Fungi")}
+      />
+      <Stack.Screen
+        name="NewFungiRecordScreen2"
+        component={NewFungiRecordScreen2}
+        options={ScreenOptions("Nuevo registro Fungi")}
+      />
+      <Stack.Screen
+        name="NewFungiRecordScreen3"
+        component={NewFungiRecordScreen3}
+        options={ScreenOptions("Nuevo registro Fungi")}
       />
     </Stack.Navigator>
   );
 };
 
 export default MainStackNavigator;
-
-

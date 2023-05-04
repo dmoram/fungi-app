@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import GlobalStyles from "../../styles/GlobalStyles";
 
@@ -37,6 +37,40 @@ const Comment = ({
       </View>
 
       <Text style={[styles.text, styles.content]}>{content}</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text>{likes} Likes</Text>
+      </View>
+      <View style={styles.footer}>
+        <TouchableOpacity
+          onPress={async () => {
+            try {
+              if (liked) {
+                await onPressDislike();
+              } else {
+                await onPressLike();
+              }
+              setLiked(!liked);
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={[
+                styles.footer_text,
+                { color: liked ? "#FFD300" : "white" },
+              ]}
+            >
+              Me gusta{" "}
+            </Text>
+            <Image
+              source={require("../../assets/like_icon.png")}
+              style={[styles.icon, { tintColor: liked ? "#FFD300" : "white" }]}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -57,6 +91,18 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#544C0C",
+    elevation: 10,
+    borderRadius: 10,
+    height: 40,
+    marginTop: 20,
+    paddingHorizontal: 20,
+    marginHorizontal: 20,
   },
   header: {
     marginBottom: 5,
