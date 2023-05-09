@@ -27,7 +27,6 @@ const FungiRecordScreen = ({ navigation }) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [image, setImage] = useState(null);
-  const [userType, setUserType] = useState("");
   const classes = [
     { name: "Conoide", img: require("../assets/principiante.png") },
     { name: "Callampa", img: require("../assets/observador.png") },
@@ -121,6 +120,20 @@ const FungiRecordScreen = ({ navigation }) => {
     setIsNotifOpen(false);
     setIsPopupOpen(false);
   };
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
   return (
     <View style={[styles.container]}>

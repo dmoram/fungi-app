@@ -5,8 +5,10 @@ import { getUserId } from "../utils/storage";
 import Confirm from "../components/Popup/ConfirmPopup";
 import Notif from "../components/Popup/NotifPopup";
 import GlobalStyles from "../styles/GlobalStyles";
+import { Alert } from "react-native";
 
-const NewFungiRecordScreen3 = ({ navigation }) => {
+const NewFungiRecordScreen3 = ({ navigation, route }) => {
+  const { description, textLocation, location, image, fungiClass } = route.params;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [msg, setMsg] = useState("");
@@ -49,11 +51,11 @@ const NewFungiRecordScreen3 = ({ navigation }) => {
       data.append("author_id", id);
       data.append("location", textLocation);
 
-      await getLocation();
 
       data.append("latitude", location.coords.latitude);
       data.append("longitude", location.coords.longitude);
       data.append("altitude", location.coords.altitude);
+      data.append("fungiClass", fungiClass)
       console.log(data);
       axios
         .post("/records", data, {

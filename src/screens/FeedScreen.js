@@ -47,6 +47,7 @@ const orderPostsByDate = (posts) => {
 const orderPostsByRelevance = (posts) => {
   return posts.sort((a, b) => b.likes - a.likes);
 };
+
 function FeedScreen({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [orderBy, setOrderBy] = useState("recent");

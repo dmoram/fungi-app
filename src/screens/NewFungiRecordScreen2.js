@@ -3,19 +3,48 @@ import React, { useState } from "react";
 import GlobalStyles from "../styles/GlobalStyles";
 
 const NewFungiRecordScreen2 = ({ navigation, route }) => {
-  const {description, textLocation, location, image} = route.params
-  const [fungiClass, setFungiClass] = useState("");
+  const { description, textLocation, location, image } = route.params;
+  const [fungiClass, setFungiClass] = useState(0);
   const classes = [
-    { name: "Globoideo", description:"asd", img: require("../assets/globoideo.png") },
-    { name: "Aspecto de copa", description:"asd",  img: require("../assets/copa.png") },
-    { name: "Sésiles", description:"asd", img: require("../assets/sesil.png") },
-    { name: "Aspecto gelatinoso", description:"asd", img: require("../assets/gelatinoso.png") },
-    { name: "Estipitado", description:"asd", img: require("../assets/estipitado.png") },
+    {
+      id:1,
+      name: "Globoideo",
+      description:
+        "Los hongos con forma globosa tienen una apariencia redondeada o esférica",
+      img: require("../assets/globoideo.png"),
+    },
+    {
+      id:2,
+      name: "Aspecto de copa",
+      description: "Tienen forma de copa o cúpula, con un cuerpo en forma de taza y un borde enrollado hacia adentro",
+      img: require("../assets/copa.png"),
+    },
+    {
+      id:3,
+      name: "Sésiles",
+      description:
+        "No tienen un tallo o pie claramente definido",
+      img: require("../assets/sesil.png"),
+    },
+    {
+      id:4,
+      name: "Aspecto gelatinoso",
+      description:
+        "Los hongos de forma gelatinosa tienen una consistencia suave y gelatinosa",
+      img: require("../assets/gelatinoso.png"),
+    },
+    {
+      id:5,
+      name: "Pileado",
+      description:
+        "Tienen una forma de sombrero distintiva con un sombrero convexo y un pie central",
+      img: require("../assets/estipitado.png"),
+    },
   ];
 
   const handleSelect = (option) => {
     if (fungiClass === option) {
-      setFungiClass("");
+      setFungiClass(0);
     } else {
       setFungiClass(option);
     }
@@ -26,7 +55,7 @@ const NewFungiRecordScreen2 = ({ navigation, route }) => {
       <Text style={styles.title}>Parte 2: Clasificación</Text>
       {classes.map((option) => (
         <TouchableOpacity
-          key={option.name}
+          key={option.id}
           style={{
             borderWidth: 1,
             borderColor: "#ccc",
@@ -36,20 +65,23 @@ const NewFungiRecordScreen2 = ({ navigation, route }) => {
             elevation: 6,
             margin: 5,
             flexDirection: "row",
-            backgroundColor: fungiClass === option.name ? "#448066" : "#fff",
+            backgroundColor: fungiClass === option.id ? "#448066" : "#fff",
           }}
-          onPress={() => handleSelect(option.name)}
+          onPress={() => handleSelect(option.id)}
         >
           <Image source={option.img} style={styles.logo}></Image>
-          <Text
-            style={{
-              color: fungiClass === option.name ? "#fff" : "#000",
-              textAlign: "center",
-              fontSize: 17,
-            }}
-          >
-            {option.name}
-          </Text>
+          <View >
+            <Text
+              style={{
+                color: fungiClass === option.id ? "#fff" : "#000",
+                textAlign: "left",
+                fontSize: 17,
+              }}
+            >
+              {option.name}
+            </Text>
+            <Text style={{textAlign:"justify", marginRight:70, color: fungiClass === option.id ? "#fff" : "#000",}}>{option.description}</Text>
+          </View>
         </TouchableOpacity>
       ))}
       <TouchableOpacity
@@ -57,7 +89,7 @@ const NewFungiRecordScreen2 = ({ navigation, route }) => {
           GlobalStyles.button,
           { alignSelf: "flex-end", marginRight: 10 },
         ]}
-        onPress={() => navigation.navigate("NewFungiRecordScreen3")}
+        onPress={() => navigation.navigate("NewFungiRecordScreen3", {description: description, textLocation: textLocation,location: location, image: image, fungiClass: fungiClass})}
       >
         <Text style={GlobalStyles.button_text}>Siguiente</Text>
       </TouchableOpacity>

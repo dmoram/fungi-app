@@ -48,12 +48,12 @@ function MyTabs() {
       <Tab.Screen
         name="Feed"
         component={FeedScreen}
-        options={ScreenOptions("Micelio", "Micelio", require("../assets/forum.png"))}
+        options={ScreenOptions("Micelio: Comunidad", "Micelio", require("../assets/forum.png"))}
       />
       <Tab.Screen
         name="Fungi"
         component={HumanFungiScreen}
-        options={ScreenOptions("Humano-Hongo", "Humano-Hongo", require("../assets/hongo_icon.png"))}
+        options={ScreenOptions("Registros Fungi", "Registros Fungi", require("../assets/hongo_icon.png"))}
       />
 
       <Tab.Screen

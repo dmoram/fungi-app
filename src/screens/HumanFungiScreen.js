@@ -16,7 +16,7 @@ const FungiSensorScreen = ({navigation}) => {
             style={styles.image}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, { backgroundColor: "#788E91" }]} onPress={() => navigation.navigate("FungiRecordsScreen2")}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: "#788E91" }]} onPress={() => navigation.navigate("FungiRecordsScreen")}>
           <Text style={styles.buttonText}>Ver registros</Text>
         </TouchableOpacity>
       </View>
