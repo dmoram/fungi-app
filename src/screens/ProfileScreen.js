@@ -49,8 +49,20 @@ const handleLogout = async ({ navigation }) => {
     .catch((error) => console.log("Error al cerrar sesión", error));
 };
 
+const getPostCount = async () => {
+  const user_id = await getUserId();
+  axios
+    .get(`/posts/count/${user_id}`)
+    .then((response) => {
+      return response.data.postCount;
+    })
+    .catch((error) => console.log("Error al obtener datos", error));
+};
+
 function ProfileScreen({ navigation }) {
   const [userData, setUserData] = useState({});
+  const [postCount, setPostCount] = useState(null);
+  const [recordCount, setRecordCount] = useState(null);
 
   const getUserData = async () => {
     const token = await getToken();
@@ -61,6 +73,14 @@ function ProfileScreen({ navigation }) {
       .then((response) => {
         setUserData(response.data);
       })
+      .catch((error) => console.log(error));
+    axios
+      .get(`/posts/count/${await getUserId()}`)
+      .then((response) => setPostCount(response.data.postCount))
+      .catch((error) => console.log(error));
+    axios
+      .get(`/records/count/${await getUserId()}`)
+      .then((response) => setRecordCount(response.data.recordCount))
       .catch((error) => console.log(error));
   };
 
@@ -75,22 +95,29 @@ function ProfileScreen({ navigation }) {
           source={require("../assets/profile_icon.png")}
           style={styles.image}
         ></Image>
-        <Text style={{ fontSize: 30, fontWeight: "bold", color: "white" }}>
+        <Text
+          style={{
+            fontSize: 30,
+            fontWeight: "bold",
+            color: "black",
+            marginTop: 80,
+          }}
+        >
           {userData.username}
         </Text>
-        <Text style={{ fontSize: 20, color: "white" }}>
+        <Text style={{ fontSize: 20, color: "black" }}>
           {userData.fullName}, {userData.age} años
         </Text>
-        <Text style={{ fontSize: 20, color: "white" }}>
+        <Text style={{ fontSize: 20, color: "black" }}>
           {userData.userType}
         </Text>
-      </View>
-      <View style={styles.optionsContainer}>
+        <Text>Posts: {postCount}</Text>
+        <Text>Records: {recordCount}</Text>
         <TouchableOpacity
           onPress={() => handleLogout({ navigation })}
-          style={[GlobalStyles.button, { marginBottom: 20 }]}
+          style={[styles.button, { marginBottom: 20 }]}
         >
-          <Text style={GlobalStyles.button_text}>Cerrar sesión</Text>
+          <Text style={styles.button_text}>Cerrar sesión</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => deleteUser(navigation)}
@@ -110,23 +137,37 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#BABE89",
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     backgroundColor: "white",
     borderRadius: 100,
-    marginTop: 20,
+    marginTop: -75,
+    position: "absolute",
   },
   header: {
     flex: 1,
-    backgroundColor: "#727D15",
-    width: "95%",
+    backgroundColor: "#ffff",
+    width: "100%",
     alignItems: "center",
-    elevation: 9,
-    borderRadius: 10,
+    marginTop: 100,
+    marginBottom: -30,
+    borderRadius: 30,
+    height: "100%",
+    elevation: 10,
   },
-  optionsContainer: {
-    flex: 1,
+  button: {
+    width: "100%",
+    borderColor: "grey",
+    borderWidth: 1,
+    elevation: 1,
+  },
+  button_text: {
+    color: "black",
+    fontSize: 18,
+    textAlign: "center",
+    paddingVertical: 10,
   },
 });
