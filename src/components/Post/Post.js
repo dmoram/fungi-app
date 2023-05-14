@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
-import { getUserId } from "../../utils/storage";
+import { getUserId, getModStatus } from "../../utils/storage";
+import Confirm from "../../components/Popup/ConfirmPopup";
+import Notif from "../Popup/NotifPopup";
 
 const parseDate = (dateISO) => {
   const fechaUTC = new Date(dateISO);
@@ -14,6 +16,7 @@ const parseDate = (dateISO) => {
 const Post = ({
   id,
   author,
+  author_id,
   content,
   likes,
   comments,
@@ -23,9 +26,14 @@ const Post = ({
   onPressLike,
   onPressDislike,
   onPressComments,
+  fetchPosts,
+  navigation,
 }) => {
   const [liked, setLiked] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [isMod, setIsMod] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -45,31 +53,57 @@ const Post = ({
       }
     };
 
-    const fetchLikes = async () => {
-      const user_id = await getUserId();
-      //console.log(id, user_id)
-      try {
-        const response = await axios.get("/posts/like", {body: {post_id: id, user_id: user_id}});
-        console.log(response.data)
-        setLiked(response.data.liked);
-      } catch (error) {
-        console.log(error);
-      }
+    const fetchMod = async () => {
+      const value = await getModStatus();
+      setIsMod(value);
     };
-
     fetchImage();
-    fetchLikes();
+    fetchMod();
   }, []);
+
+  const handleDelete = async () => {
+    axios
+      .delete(`/posts/${id}`)
+      .then((response) => {
+        console.log(response);
+        setIsNotifOpen(true);
+      })
+      .catch((error) => console.log(error));
+    console.log("borrar");
+    setIsPopupOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsPopupOpen(false);
+  };
 
   return (
     <View style={styles.container}>
+      {isMod === "true" ? (
+        <TouchableOpacity
+          style={{ width: "100%" }}
+          onPress={() => setIsPopupOpen(true)}
+        >
+          <Image
+            style={{
+              alignSelf: "flex-end",
+              width: 25,
+              height: 26,
+              marginVertical: 10,
+            }}
+            source={require("../../assets/delete.png")}
+          />
+        </TouchableOpacity>
+      ) : null}
       <View style={styles.header}>
         <Image
           source={require("../../assets/user_icon.png")}
           style={styles.user_icon}
         />
         <View>
-          <Text style={[styles.text, styles.title]}>{author}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SeeProfileScreen",{user_id: author_id})}>
+            <Text style={[styles.text, styles.title]}>{author}</Text>
+          </TouchableOpacity>
           <Text style={[styles.text, styles.user_type]}>{userType}</Text>
         </View>
         <Text style={styles.date}>{parseDate(date)}</Text>
@@ -131,6 +165,24 @@ const Post = ({
           </View>
         </TouchableOpacity>
       </View>
+      <Confirm
+        visible={isPopupOpen}
+        onConfirm={handleDelete}
+        onCancel={handleCancel}
+      >
+        <Text style={styles.text}>
+          ¿Estás seguro que deseas eliminar esta publicación?
+        </Text>
+      </Confirm>
+      <Notif
+        visible={isNotifOpen}
+        onConfirm={() => {
+          setIsNotifOpen(false);
+          fetchPosts();
+        }}
+      >
+        <Text style={styles.text}>Publicación eliminada</Text>
+      </Notif>
     </View>
   );
 };
@@ -187,6 +239,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "black",
+    fontSize: 16,
   },
   icon: {
     width: 20,

@@ -12,11 +12,12 @@ import axios from "../api/axios";
 import { getUserId } from "../utils/storage";
 import { Picker } from "@react-native-picker/picker";
 
-const PostList = ({ posts, onPressLike, onPressDislike, onPressComments }) => {
+const PostList = ({ posts, onPressLike, onPressDislike, onPressComments, fetchPosts, navigation }) => {
   const renderItem = ({ item }) => (
     <Post
       id={item.id}
       author={item.Usuario.username}
+      author_id={item.Usuario.id}
       content={item.content}
       likes={item.likes}
       comments={item.comments}
@@ -26,6 +27,8 @@ const PostList = ({ posts, onPressLike, onPressDislike, onPressComments }) => {
       onPressDislike={() => onPressDislike(item.id, "dislike")}
       onPressLike={() => onPressLike(item.id, "like")}
       onPressComments={() => onPressComments(item.id)}
+      fetchPosts={() => fetchPosts()}
+      navigation={navigation}
     />
   );
 
@@ -80,7 +83,7 @@ function FeedScreen({ navigation }) {
 
   useEffect(() => {
     fetchPosts();
-  }, []); // Solo se ejecuta en el primer renderizado de la pantalla
+  }, []); 
 
   // Actualiza los posts cada vez que la pantalla se enfoca (se vuelve a visitar)
   useEffect(() => {
@@ -145,6 +148,8 @@ function FeedScreen({ navigation }) {
         onPressLike={updateLikes}
         onPressDislike={updateLikes}
         onPressComments={seeComments}
+        fetchPosts={fetchPosts}
+        navigation={navigation}
       />
     </View>
   );

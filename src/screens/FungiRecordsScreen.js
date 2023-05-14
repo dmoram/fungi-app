@@ -6,7 +6,7 @@ import axios from "../api/axios"
 import { Picker } from "@react-native-picker/picker";
 import { getUserId } from '../utils/storage'
 
-const RecordList = ({ records, onPressLike, onPressDislike, onPressComments }) => {
+const RecordList = ({ records, onPressLike, onPressDislike, onPressComments, fetchRecords }) => {
   const renderItem = ({ item }) => (
     <FungiRecord
       id={item.id}
@@ -25,16 +25,22 @@ const RecordList = ({ records, onPressLike, onPressDislike, onPressComments }) =
       onPressDislike={() => onPressDislike(item.id, "dislike")}
       onPressLike={() => onPressLike(item.id, "like")}
       onPressComments={() => onPressComments(item.id)}
+      fetchRecords={() => fetchRecords()}
     />
   );
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={records}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      {records.length > 0 ? (
+        <FlatList
+          style={styles.container}
+          data={records}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      ) : (
+        <Text style={styles.text}>Aún no hay registros</Text>
+      )}
     </View>
   );
 };
@@ -101,6 +107,7 @@ const FungiRecordsScreen = ({navigation}) => {
         marginTop:20
       }}
     >
+      
         <View style={styles.orderContainer}>
         <Text style={{ marginLeft: 20, fontSize: 18 }}>Ordenar por</Text>
         <Picker
@@ -133,6 +140,7 @@ const FungiRecordsScreen = ({navigation}) => {
         onPressLike={updateLikes}
         onPressDislike={updateLikes}
         onPressComments={seeComments}
+        fetchRecords={fetchRecords}
       />
     </View>
   )
@@ -181,4 +189,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 5,
   },
+  text:{
+    fontSize:18,
+    textAlign:"center",
+    marginTop:20
+  }
 });

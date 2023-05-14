@@ -56,3 +56,25 @@ export const getUserId = async () => {
     return null;
   }
 };
+
+export const storeModStatus = async (value) => {
+  try {
+    await AsyncStorage.setItem("@mod", value);
+  } catch (error) {
+    console.error("Error al guardar el estado: ", error);
+  }
+}
+
+export const getModStatus = async () => {
+  try {
+    const value = await AsyncStorage.getItem("@mod");
+    if (value !== null) {
+      return value;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener el estado: ", error);
+    return null;
+  }
+}

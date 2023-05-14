@@ -12,6 +12,8 @@ import NewFungiRecordScreen1 from "../screens/NewFungiRecordScreen1";
 import NewFungiRecordScreen2 from "../screens/NewFungiRecordScreen2";
 import NewFungiRecordScreen3 from "../screens/NewFungiRecordScreen3";
 import FungiRecordsScreen from "../screens/FungiRecordsScreen";
+import AccountScreen from "../screens/AccountScreen";
+import SeeProfileScreen from "../screens/SeeProfileScreen";
 
 function ScreenOptions(title) {
   return {
@@ -82,6 +84,16 @@ const MainStackNavigator = () => {
         name="NewFungiRecordScreen3"
         component={NewFungiRecordScreen3}
         options={ScreenOptions("Nuevo registro Fungi")}
+      />
+      <Stack.Screen
+        name="AccountScreen"
+        component={AccountScreen}
+        options={ScreenOptions("Ajustes de cuenta")}
+      />
+      <Stack.Screen
+        name="SeeProfileScreen"
+        component={SeeProfileScreen}
+        options={ScreenOptions("Vista de perfil")}
       />
     </Stack.Navigator>
   );

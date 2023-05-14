@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
-import { getUserId } from "../../utils/storage";
+import { getUserId, getModStatus } from "../../utils/storage";
+import Confirm from "../Popup/ConfirmPopup";
+import Notif from "../Popup/NotifPopup";
 
 const parseDate = (dateISO) => {
   const fechaUTC = new Date(dateISO);
@@ -28,9 +30,13 @@ const FungiRecord = ({
   onPressLike,
   onPressDislike,
   onPressComments,
+  fetchRecords
 }) => {
   const [liked, setLiked] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [isMod, setIsMod] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -50,11 +56,48 @@ const FungiRecord = ({
       }
     };
 
+    const fetchMod = async () => {
+      const value = await getModStatus();
+      setIsMod(value);
+    };
     fetchImage();
+    fetchMod();
   }, []);
+
+  const handleDelete = async () => {
+    axios
+      .delete(`/records/${id}`)
+      .then((response) => {
+        console.log(response);
+        setIsNotifOpen(true);
+      })
+      .catch((error) => console.log(error));
+    console.log("borrar");
+    setIsPopupOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsPopupOpen(false);
+  };
 
   return (
     <View style={styles.container}>
+      {isMod === "true" ? (
+        <TouchableOpacity
+          style={{ width: "100%" }}
+          onPress={() => setIsPopupOpen(true)}
+        >
+          <Image
+            style={{
+              alignSelf: "flex-end",
+              width: 25,
+              height: 26,
+              marginVertical: 10,
+            }}
+            source={require("../../assets/delete.png")}
+          />
+        </TouchableOpacity>
+      ) : null}
       <View style={styles.header}>
         <Image
           source={require("../../assets/user_icon.png")}
@@ -143,6 +186,24 @@ const FungiRecord = ({
           </View>
         </TouchableOpacity>
       </View>
+      <Confirm
+        visible={isPopupOpen}
+        onConfirm={handleDelete}
+        onCancel={handleCancel}
+      >
+        <Text style={styles.text}>
+          ¿Estás seguro que deseas eliminar este registro?
+        </Text>
+      </Confirm>
+      <Notif
+        visible={isNotifOpen}
+        onConfirm={() => {
+          setIsNotifOpen(false);
+          fetchRecords();
+        }}
+      >
+        <Text style={styles.text}>Registro eliminado</Text>
+      </Notif>
     </View>
   );
 };

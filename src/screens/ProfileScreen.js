@@ -2,34 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { getUserId, removeToken, getToken } from "../utils/storage";
 import axios from "../api/axios";
+import Notif from "../components/Popup/NotifPopup";
 import GlobalStyles from "../styles/GlobalStyles";
-
-const deleteUser = async (navigation) => {
-  try {
-    const id = await getUserId();
-    const token = await getToken();
-    axios
-      .delete("/usuarios/" + id)
-      .then((response) => {
-        // Si la solicitud es exitosa, navegamos a la pantalla de Tabs
-        console.log("Usuario eliminado correctamente");
-        // Se almacena el token de usuario
-
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "FirstScreen" }],
-        });
-      })
-      .catch((error) => {
-        // Si la solicitud falla, muestra un mensaje de error
-        console.error(error);
-        console.log("/usuarios/" + id);
-        alert("Error al eliminar usuario. Inténtalo de nuevo más tarde.");
-      });
-  } catch (error) {
-    console.error("Error al eliminar usuario: ", error);
-  }
-};
 
 const handleLogout = async ({ navigation }) => {
   const user_id = await getUserId();
@@ -43,7 +17,7 @@ const handleLogout = async ({ navigation }) => {
       console.log("Logged out");
       navigation.reset({
         index: 0,
-        routes: [{ name: "Login" }],
+        routes: [{ name: "FirstScreen" }],
       });
     })
     .catch((error) => console.log("Error al cerrar sesión", error));
@@ -63,6 +37,7 @@ function ProfileScreen({ navigation }) {
   const [userData, setUserData] = useState({});
   const [postCount, setPostCount] = useState(null);
   const [recordCount, setRecordCount] = useState(null);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
 
   const getUserData = async () => {
     const token = await getToken();
@@ -88,6 +63,8 @@ function ProfileScreen({ navigation }) {
     getUserData();
   }, []);
 
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -95,37 +72,103 @@ function ProfileScreen({ navigation }) {
           source={require("../assets/profile_icon.png")}
           style={styles.image}
         ></Image>
+        <Text style={{textAlign:"right", width:"100%", marginVertical:10, position:"absolute", paddingRight:20}}>{userData.moderator ? "Moderador":null}</Text>
         <Text
           style={{
             fontSize: 30,
             fontWeight: "bold",
             color: "black",
-            marginTop: 80,
+            marginTop: 60,
           }}
         >
           {userData.username}
         </Text>
-        <Text style={{ fontSize: 20, color: "black" }}>
+        <Text style={{ fontSize: 18, color: "black" }}>
           {userData.fullName}, {userData.age} años
         </Text>
-        <Text style={{ fontSize: 20, color: "black" }}>
+        <Text style={{ fontSize: 18, color: "black" }}>
           {userData.userType}
         </Text>
-        <Text>Posts: {postCount}</Text>
-        <Text>Records: {recordCount}</Text>
+        <View style={{ flexDirection: "row", width: "100%", marginTop: 20 }}>
+          <View style={styles.box}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginHorizontal: 30,
+              }}
+            >
+              <Text style={styles.number}>{postCount}</Text>
+              <Image
+                style={{
+                  alignSelf: "center",
+                  width: 35,
+                  height: 35,
+                  tintColor: "purple",
+                }}
+                source={require("../assets/post.png")}
+              />
+            </View>
+            <Text style={styles.boxText}>Publicaciones </Text>
+          </View>
+          <View style={styles.box}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginHorizontal: 30,
+              }}
+            >
+              <Text style={styles.number}>{recordCount}</Text>
+              <Image
+                style={{
+                  alignSelf: "center",
+                  width: 35,
+                  height: 35,
+                  tintColor: "purple",
+                }}
+                source={require("../assets/fungi_record.png")}
+              />
+            </View>
+            <Text style={styles.boxText}>Registros Fungi </Text>
+          </View>
+        </View>
         <TouchableOpacity
           onPress={() => handleLogout({ navigation })}
-          style={[styles.button, { marginBottom: 20 }]}
+          style={[styles.button, { marginTop: 60 }]}
         >
+          <Image style={styles.icon} source={require("../assets/logout.png")} />
           <Text style={styles.button_text}>Cerrar sesión</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => deleteUser(navigation)}
-          style={GlobalStyles.button}
+          onPress={() => setIsNotifOpen(true)}
+          style={[styles.button]}
         >
-          <Text style={GlobalStyles.button_text}>Delete</Text>
+          <Image
+            style={[styles.icon, { width: 28 }]}
+            source={require("../assets/report.png")}
+          />
+          <Text style={styles.button_text}>Reportar un problema</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AccountScreen")}
+          style={styles.button}
+        >
+          <Image
+            style={styles.icon}
+            source={require("../assets/settings.png")}
+          />
+          <Text style={styles.button_text}>Ajustes de cuenta</Text>
+        </TouchableOpacity>
+        
       </View>
+      <Notif
+        visible={isNotifOpen}
+        onConfirm={() => setIsNotifOpen(false)}
+      >
+        <Text style={styles.text}>Para notificar cualquier problema en la aplicación, favor informar todos los detalles a:</Text>
+        <Text style={styles.text}>diego.mora@alumnos.uach.cl</Text>
+      </Notif>
     </View>
   );
 }
@@ -160,14 +203,39 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    borderColor: "grey",
-    borderWidth: 1,
-    elevation: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    paddingHorizontal: 40,
+    paddingVertical: 10,
   },
   button_text: {
-    color: "black",
+    color: "purple",
     fontSize: 18,
     textAlign: "center",
     paddingVertical: 10,
   },
+  number: {
+    fontSize: 35,
+    textAlign: "center",
+  },
+  box: {
+    borderWidth: 1,
+    flex: 1,
+    borderRightWidth: 0,
+    borderColor: "#C0BFBF",
+  },
+  boxText: {
+    fontSize: 15,
+    textAlign: "center",
+  },
+  icon: {
+    alignSelf: "center",
+    width: 25,
+    height: 25,
+    marginRight: 40,
+    tintColor: "purple",
+  },
+  text:{
+    fontSize:18
+  }
 });

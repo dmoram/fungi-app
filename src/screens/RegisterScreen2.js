@@ -49,6 +49,7 @@ const RegisterScreen2 = ({ navigation, route }) => {
       gender,
       age: parseInt(age),
       userType,
+      moderator: false
     };
 
     try {
@@ -153,10 +154,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#204850",
     padding: 18,
-    position: "absolute",
     alignSelf: "flex-end",
-    bottom: 16,
-    right: 16,
+    marginTop:40,
+    marginRight:20,
     borderRadius: 15,
     elevation: 5,
   },
