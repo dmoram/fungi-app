@@ -6,11 +6,12 @@ import axios from "../api/axios"
 import { Picker } from "@react-native-picker/picker";
 import { getUserId } from '../utils/storage'
 
-const RecordList = ({ records, onPressLike, onPressDislike, onPressComments, fetchRecords }) => {
+const RecordList = ({ records, onPressLike, onPressDislike, onPressComments, fetchRecords, navigation }) => {
   const renderItem = ({ item }) => (
     <FungiRecord
       id={item.id}
       author={item.Usuario.username}
+      author_id={item.Usuario.id}
       description={item.description}
       location={item.location}
       likes={item.likes}
@@ -26,6 +27,7 @@ const RecordList = ({ records, onPressLike, onPressDislike, onPressComments, fet
       onPressLike={() => onPressLike(item.id, "like")}
       onPressComments={() => onPressComments(item.id)}
       fetchRecords={() => fetchRecords()}
+      navigation={navigation}
     />
   );
 
@@ -141,6 +143,7 @@ const FungiRecordsScreen = ({navigation}) => {
         onPressDislike={updateLikes}
         onPressComments={seeComments}
         fetchRecords={fetchRecords}
+        navigation={navigation}
       />
     </View>
   )

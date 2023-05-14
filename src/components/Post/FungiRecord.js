@@ -16,6 +16,7 @@ const parseDate = (dateISO) => {
 const FungiRecord = ({
   id,
   author,
+  author_id,
   description,
   location,
   likes,
@@ -30,7 +31,8 @@ const FungiRecord = ({
   onPressLike,
   onPressDislike,
   onPressComments,
-  fetchRecords
+  fetchRecords,
+  navigation,
 }) => {
   const [liked, setLiked] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
@@ -104,7 +106,13 @@ const FungiRecord = ({
           style={styles.user_icon}
         />
         <View>
-          <Text style={[styles.text, styles.title]}>{author}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("SeeProfileScreen", { user_id: author_id })
+            }
+          >
+            <Text style={[styles.text, styles.title]}>{author}</Text>
+          </TouchableOpacity>
           <Text style={[styles.text, styles.user_type]}>{userType}</Text>
         </View>
         <Text style={styles.date}>{parseDate(date)}</Text>
