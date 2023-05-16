@@ -4,19 +4,27 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Image
 } from "react-native";
 import React, { useState } from "react";
 import axios from "../api/axios";
-import { storeToken, storeUserId, storeModStatus} from "../utils/storage";
+import {
+  storeToken,
+  storeUserId,
+  storeModStatus,
+  storeRememberStatus,
+} from "../utils/storage";
 import GlobalStyles from "../styles/GlobalStyles";
 import Notif from "../components/Popup/NotifPopup";
 import { validarEmail } from "../utils/utils";
+import Checkbox from "expo-checkbox";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isChecked, setChecked] = useState(false);
 
   const handleConfirm = () => {
     // Mostrar la ventana emergente de confirmación
@@ -29,7 +37,9 @@ const LoginScreen = ({ navigation }) => {
       setIsPopupOpen(true);
       return false;
     } else if (password.length < 7) {
-      setErrMsg("Por favor, ingresa una contraseña válida (7 o más caracteres)");
+      setErrMsg(
+        "Por favor, ingresa una contraseña válida (7 o más caracteres)"
+      );
       setIsPopupOpen(true);
       return false;
     }
@@ -38,6 +48,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={GlobalStyles.container}>
+      <Image style={styles.logo} source={require("../assets/micelio_logo.png")}/>
       <Text style={styles.description}>Correo electrónico</Text>
       <TextInput
         style={styles.input}
@@ -53,6 +64,15 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
+      <View style={styles.section}>
+        <Checkbox
+          style={{ margin: 8 }}
+          value={isChecked}
+          onValueChange={setChecked}
+          color={isChecked ? "#4630EB" : undefined}
+        />
+        <Text style={styles.text}>Mantener sesión iniciada</Text>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -66,7 +86,10 @@ const LoginScreen = ({ navigation }) => {
                 storeToken(response.data.token);
                 storeUserId(response.data.id.toString());
                 storeModStatus(response.data.mod.toString());
-                console.log(response.data.mod)
+                if (isChecked === true) {
+                  storeRememberStatus("true");
+                }
+                console.log(response.data.mod);
                 navigation.reset({
                   index: 0,
                   routes: [{ name: "Tabs" }],
@@ -134,6 +157,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   text: {
-    fontSize: 16
+    fontSize: 16,
   },
+  section: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logo:{
+    width:250,
+    height:150
+  }
 });

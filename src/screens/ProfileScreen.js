@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { getUserId, removeToken, getToken } from "../utils/storage";
+import { getUserId, getToken, storeRememberStatus } from "../utils/storage";
 import axios from "../api/axios";
 import Notif from "../components/Popup/NotifPopup";
 import GlobalStyles from "../styles/GlobalStyles";
@@ -15,12 +15,15 @@ const handleLogout = async ({ navigation }) => {
     })
     .then((response) => {
       console.log("Logged out");
+      storeRememberStatus("false");
       navigation.reset({
         index: 0,
         routes: [{ name: "FirstScreen" }],
       });
     })
-    .catch((error) => console.log("Error al cerrar sesión", error));
+    .catch((error) => {
+      console.log("Error al cerrar sesión", error);
+    });
 };
 
 const getPostCount = async () => {
@@ -63,8 +66,6 @@ function ProfileScreen({ navigation }) {
     getUserData();
   }, []);
 
-  
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -72,7 +73,17 @@ function ProfileScreen({ navigation }) {
           source={require("../assets/profile_icon.png")}
           style={styles.image}
         ></Image>
-        <Text style={{textAlign:"right", width:"100%", marginVertical:10, position:"absolute", paddingRight:20}}>{userData.moderator ? "Moderador":null}</Text>
+        <Text
+          style={{
+            textAlign: "right",
+            width: "100%",
+            marginVertical: 10,
+            position: "absolute",
+            paddingRight: 20,
+          }}
+        >
+          {userData.moderator ? "Moderador" : null}
+        </Text>
         <Text
           style={{
             fontSize: 30,
@@ -160,13 +171,12 @@ function ProfileScreen({ navigation }) {
           />
           <Text style={styles.button_text}>Ajustes de cuenta</Text>
         </TouchableOpacity>
-        
       </View>
-      <Notif
-        visible={isNotifOpen}
-        onConfirm={() => setIsNotifOpen(false)}
-      >
-        <Text style={styles.text}>Para notificar cualquier problema en la aplicación, favor informar todos los detalles a:</Text>
+      <Notif visible={isNotifOpen} onConfirm={() => setIsNotifOpen(false)}>
+        <Text style={styles.text}>
+          Para notificar cualquier problema en la aplicación, favor informar
+          todos los detalles a:
+        </Text>
         <Text style={styles.text}>diego.mora@alumnos.uach.cl</Text>
       </Notif>
     </View>
@@ -235,7 +245,7 @@ const styles = StyleSheet.create({
     marginRight: 40,
     tintColor: "purple",
   },
-  text:{
-    fontSize:18
-  }
+  text: {
+    fontSize: 18,
+  },
 });

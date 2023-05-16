@@ -41,7 +41,6 @@ export const storeUserId = async (value) => {
   }
 };
 
-
 // Función para obtener el token de AsyncStorage
 export const getUserId = async () => {
   try {
@@ -63,7 +62,7 @@ export const storeModStatus = async (value) => {
   } catch (error) {
     console.error("Error al guardar el estado: ", error);
   }
-}
+};
 
 export const getModStatus = async () => {
   try {
@@ -76,5 +75,26 @@ export const getModStatus = async () => {
   } catch (error) {
     console.error("Error al obtener el estado: ", error);
     return null;
+  }
+};
+
+export const storeRememberStatus = async (value) => {
+  try {
+    await AsyncStorage.setItem("@remember", value);
+  } catch (error) {
+    console.error("Error al guardar el estado: ", error);
+  }
+}
+
+export const getRememberStatus = async () => {
+  try {
+    const value = await AsyncStorage.getItem("@remember");
+    if (value !== null) {
+      return value;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al obtener el estado: ", error);
   }
 }

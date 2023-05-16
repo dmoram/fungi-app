@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "fungi-app",
+    "name": "Micelio",
     "slug": "fungi-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "src/assets/icon.png",
+    "icon": "./src/assets/logoo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "src/assets/splash.png",
+      "image": "./src/assets/micelio_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#E7EDC6"
     },
     "androidStatusBar": {
       "backgroundColor": "#000000"
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "src/assets/splash.png",
+        "foregroundImage": "./src/assets/micelio_app_icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.dmoram.fungiapp"

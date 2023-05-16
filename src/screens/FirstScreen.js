@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getRememberStatus } from "../utils/storage";
 import {
   StyleSheet,
   Text,
@@ -9,6 +10,22 @@ import {
 } from "react-native";
 
 const FirstScreen = ({ navigation }) => {
+  const checkRememberStatus = async () => {
+    try {
+      const status = await getRememberStatus();
+      if (status === "true") {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Tabs" }],
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    checkRememberStatus();
+  }, []);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -60,10 +77,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     color: "white",
-    fontWeight:"bold",
+    fontWeight: "bold",
     paddingHorizontal: 5,
     marginTop: 90,
-    textAlign:"center"
+    textAlign: "center",
   },
   text: {
     fontSize: 20,
@@ -99,7 +116,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     paddingVertical: 20,
   },
-  buttonsContainer:{
-    alignItems:"center"
-  }
+  buttonsContainer: {
+    alignItems: "center",
+  },
 });
