@@ -5,9 +5,9 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
-  ImageBackground,
+  TouchableOpacity
 } from "react-native";
+import IntroScreen from "./IntroScreen";
 
 const FirstScreen = ({ navigation }) => {
   const checkRememberStatus = async () => {
@@ -28,13 +28,7 @@ const FirstScreen = ({ navigation }) => {
   }, []);
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require("../assets/fungi.png")}
-        style={styles.image}
-      >
-        <Text style={styles.title}>
-          ¡Bienvenido a la comunidad de los amantes de los hongos!{" "}
-        </Text>
+        <Image style={{width:300, height:200, marginTop:100}} source={require("../assets/micelio_logo.png")}/>
         <View style={styles.box}>
           <Text style={styles.text}>
             Explora y aprende sobre los hongos más fascinantes del reino fungi,
@@ -60,7 +54,7 @@ const FirstScreen = ({ navigation }) => {
             <Text style={styles.buttonText}>Regístrate</Text>
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+      
     </View>
   );
 };
@@ -70,7 +64,7 @@ export default FirstScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffff",
     alignItems: "center",
     justifyContent: "flex-start",
   },
@@ -79,7 +73,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     paddingHorizontal: 5,
-    marginTop: 90,
+    
     textAlign: "center",
   },
   text: {
@@ -99,7 +93,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#0D4A4D",
     borderRadius: 15,
-    padding: 20,
+    padding: 15,
     marginBottom: 20,
     elevation: 5,
   },
@@ -110,13 +104,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   box: {
-    marginTop: 20,
-    backgroundColor: "#2D3200",
+    backgroundColor: "#370837",
     borderRadius: 10,
-    opacity: 0.8,
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   buttonsContainer: {
     alignItems: "center",
+    marginTop:20
   },
 });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://ffa6-146-83-216-251.ngrok-free.app/api',
+  baseURL: 'https://spicy-trams-happen.loca.lt',
 });
 
 export default instance;

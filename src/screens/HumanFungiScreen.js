@@ -18,6 +18,10 @@ const FungiSensorScreen = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, { backgroundColor: "#788E91" }]} onPress={() => navigation.navigate("FungiRecordsScreen")}>
           <Text style={styles.buttonText}>Ver registros</Text>
+          <Image
+            source={require("../assets/lupa.png")}
+            style={[styles.image,{width:130, height:130, marginVertical:35}]}
+          />
         </TouchableOpacity>
       </View>
     </View>

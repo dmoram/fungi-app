@@ -4,7 +4,7 @@
     "slug": "fungi-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/logoo.png",
+    "icon": "./src/assets/app_ico.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/micelio_logo.png",
@@ -22,10 +22,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/micelio_app_icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/app_ico.png",
+        "backgroundColor": "#3A0F76"
       },
-      "package": "com.dmoram.fungiapp"
+      "package": "com.dmoram.micelioapp"
     },
     "web": {
       "favicon": "src/assets/favicon.png"

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import { getUserId, getModStatus } from "../../utils/storage";
@@ -34,11 +34,13 @@ const Post = ({
   const [isMod, setIsMod] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchImage = async () => {
       if (image != null && image != "") {
         try {
+          setIsLoading(true); // Mostrar ActivityIndicator mientras se carga la imagen
           const response = await axios.get(`/posts/${id}`, {
             responseType: "blob",
           });
@@ -46,9 +48,11 @@ const Post = ({
           reader.readAsDataURL(response.data);
           reader.onloadend = () => {
             setImageUrl(reader.result);
+            setIsLoading(false); // Ocultar ActivityIndicator una vez que la imagen se ha cargado
           };
         } catch (error) {
           console.log("da", error);
+          setIsLoading(false); // Ocultar ActivityIndicator en caso de error
         }
       }
     };
@@ -113,10 +117,14 @@ const Post = ({
       {imageUrl ? (
         <TouchableOpacity onPress={() => {}}>
           <View style={styles.image}>
-            <Image
-              source={{ uri: imageUrl }}
-              style={{ width: 300, height: 400 }}
-            />
+            {isLoading ? (
+              <ActivityIndicator size="large" color="teal" />
+            ) : (
+              <Image
+                source={{ uri: imageUrl }}
+                style={{ width: 300, height: 400 }}
+              />
+            )}
           </View>
         </TouchableOpacity>
       ) : null}

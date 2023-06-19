@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9F8",
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingTop: 40,
+    paddingTop: 20,
   },
   title: {
     fontSize: 30,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 17,
     width: "80%",
-    paddingTop: 20,
+    paddingTop: 10,
   },
   input: {
     width: "80%",

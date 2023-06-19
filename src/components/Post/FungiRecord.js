@@ -136,8 +136,8 @@ const FungiRecord = ({
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Datos sensores</Text>
-        <Text style={[styles.text, styles.coords]}>Temperatura: 21°C</Text>
-        <Text style={[styles.text, styles.coords]}>Humedad: 85,32%</Text>
+        <Text style={[styles.text, styles.coords]}>Temperatura: No disponible</Text>
+        <Text style={[styles.text, styles.coords]}>Humedad: No disponible</Text>
       </View>
       {imageUrl ? (
         <TouchableOpacity onPress={() => {}}>

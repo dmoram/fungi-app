@@ -12,7 +12,14 @@ import axios from "../api/axios";
 import { getUserId } from "../utils/storage";
 import { Picker } from "@react-native-picker/picker";
 
-const PostList = ({ posts, onPressLike, onPressDislike, onPressComments, fetchPosts, navigation }) => {
+const PostList = ({
+  posts,
+  onPressLike,
+  onPressDislike,
+  onPressComments,
+  fetchPosts,
+  navigation,
+}) => {
   const renderItem = ({ item }) => (
     <Post
       id={item.id}
@@ -52,6 +59,7 @@ const orderPostsByRelevance = (posts) => {
 };
 
 function FeedScreen({ navigation }) {
+  const [showIntro, setShowIntro] = useState(true);
   const [posts, setPosts] = useState([]);
   const [orderBy, setOrderBy] = useState("recent");
 
@@ -83,7 +91,7 @@ function FeedScreen({ navigation }) {
 
   useEffect(() => {
     fetchPosts();
-  }, []); 
+  }, []);
 
   // Actualiza los posts cada vez que la pantalla se enfoca (se vuelve a visitar)
   useEffect(() => {
@@ -107,7 +115,7 @@ function FeedScreen({ navigation }) {
         onPress={() => navigation.navigate("NewPostScreen")}
       >
         <View style={styles.createButton}>
-          <Text style={{ alignSelf: "center", fontSize: 18, color:"white" }}>
+          <Text style={{ alignSelf: "center", fontSize: 18, color: "white" }}>
             Crear publicación
           </Text>
           <Image
@@ -179,7 +187,7 @@ const styles = StyleSheet.create({
   createIcon: {
     width: 40,
     height: 40,
-    tintColor:"white"
+    tintColor: "white",
   },
   createButton: {
     flexDirection: "row",

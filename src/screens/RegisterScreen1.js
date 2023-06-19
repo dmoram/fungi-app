@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#204850",
     padding: 18,
     alignSelf: "flex-end",
-    marginTop:80,
+    marginTop:40,
     marginRight:20,
     borderRadius: 15,
     elevation: 5,
