@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import React, { useState } from "react";
 import axios from "../api/axios";
 import { getUserId } from "../utils/storage";
@@ -8,10 +14,13 @@ import GlobalStyles from "../styles/GlobalStyles";
 import { Alert } from "react-native";
 
 const NewFungiRecordScreen3 = ({ navigation, route }) => {
-  const { description, textLocation, location, image, fungiClass } = route.params;
+  const { description, textLocation, location, image, fungiClass } =
+    route.params;
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  const [temperature, setTemperature] = useState(null);
+  const [humidity, setHumidity] = useState(null);
 
   const handleConfirm = () => {
     // Mostrar la ventana emergente de confirmación
@@ -23,7 +32,45 @@ const NewFungiRecordScreen3 = ({ navigation, route }) => {
     setIsPopupOpen(false);
   };
 
+  const checkTemperature = (value) => {
+    if (value !== null && value !== "") {
+      const temperatureValue = parseFloat(value);
+      if (isNaN(temperatureValue)) {
+        setMsg("La temperatura debe ser un número válido");
+        setIsNotifOpen(true);
+        return false;
+      }
+      // Realiza cualquier otra validación necesaria
+      return true;
+    } else {
+      setMsg("Por favor, ingresa un valor para la temperatura");
+      setIsNotifOpen(true);
+      return false;
+    }
+  };
+
+  const checkHumidity = (value) => {
+    if (value !== null && value !== "") {
+      const humidityValue = parseFloat(value);
+      if (isNaN(humidityValue)) {
+        setMsg("La humedad debe ser un número válido");
+        setIsNotifOpen(true);
+        return false;
+      }
+      // Realiza cualquier otra validación necesaria
+      return true;
+    } else {
+      setMsg("Por favor, ingresa un valor para la humedad");
+      setIsNotifOpen(true);
+      return false;
+    }
+  };
+
   const handlePublish = async ({ navigation }) => {
+    checkHumidity(humidity);
+    checkTemperature(temperature);
+    console.log(temperature);
+    console.log(humidity);
     if (!description) {
       setMsg("Por favor, brinda una breve descripción de tu publicación");
       setIsNotifOpen(true);
@@ -51,11 +98,12 @@ const NewFungiRecordScreen3 = ({ navigation, route }) => {
       data.append("author_id", id);
       data.append("location", textLocation);
 
-
       data.append("latitude", location.coords.latitude);
       data.append("longitude", location.coords.longitude);
       data.append("altitude", location.coords.altitude);
-      data.append("fungiClass", fungiClass)
+      data.append("fungiClass", fungiClass);
+      data.append("temperature",temperature);
+      data.append("humidity", humidity);
       console.log(data);
       axios
         .post("/records", data, {
@@ -84,6 +132,33 @@ const NewFungiRecordScreen3 = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Parte 3: Captura de datos</Text>
+      <Text style={[styles.title, { paddingHorizontal: 20 }]}>
+        Medición de la humedad y temperatura de los sensores
+      </Text>
+      <View style={{ width: "100%", flexDirection: "row" }}>
+        <Text style={{ textAlign: "left", fontSize: 20, paddingLeft: 25 }}>
+          Temperatura{"(°C)"}:
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder=" Escribe aquí"
+          value={temperature}
+          onChangeText={setTemperature}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={{ width: "100%", flexDirection: "row", marginTop: 20 }}>
+        <Text style={{ textAlign: "left", fontSize: 20, paddingLeft: 25 }}>
+          Humedad{"(%)"}:{"      "}
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder=" Escribe aquí"
+          value={humidity}
+          onChangeText={setHumidity}
+          keyboardType="numeric"
+        />
+      </View>
       <TouchableOpacity
         style={[GlobalStyles.button, { marginTop: 40 }]}
         onPress={handleConfirm}
@@ -118,15 +193,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  input: {
-    height: 100,
-    width: "90%",
-    borderColor: "gray",
-    borderWidth: 1,
-    textAlignVertical: "top",
-    fontSize: 17,
-    borderRadius: 10,
-  },
   button: {
     padding: 15,
     marginTop: 30,
@@ -153,5 +219,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginVertical: 20,
+  },
+  input: {
+    height: 35,
+    width: "50%",
+    borderColor: "gray",
+    borderWidth: 1,
+    textAlignVertical: "top",
+    fontSize: 17,
+    borderRadius: 3,
+    backgroundColor: "#F9F9F8",
+    marginLeft: 8,
   },
 });

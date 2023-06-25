@@ -21,6 +21,8 @@ const RecordList = ({ records, onPressLike, onPressDislike, onPressComments, fet
       longitude={item.longitude}
       altitude={item.altitude}
       fungiClass={item.fungiClass}
+      temperature={item.temperature}
+      humidity={item.humidity}
       userType={item.Usuario.userType}
       date={item.createdAt}
       onPressDislike={() => onPressDislike(item.id, "dislike")}

@@ -27,6 +27,8 @@ const FungiRecordScreen = ({ navigation }) => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [image, setImage] = useState(null);
+  
+
   const classes = [
     { name: "Conoide", img: require("../assets/principiante.png") },
     { name: "Callampa", img: require("../assets/observador.png") },

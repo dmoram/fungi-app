@@ -26,6 +26,8 @@ const FungiRecord = ({
   longitude,
   altitude,
   fungiClass,
+  temperature,
+  humidity,
   userType,
   date,
   onPressLike,
@@ -136,8 +138,8 @@ const FungiRecord = ({
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Datos sensores</Text>
-        <Text style={[styles.text, styles.coords]}>Temperatura: No disponible</Text>
-        <Text style={[styles.text, styles.coords]}>Humedad: No disponible</Text>
+        <Text style={[styles.text, styles.coords]}>Temperatura: {parseFloat(temperature).toFixed(1)}{" °C"}</Text>
+        <Text style={[styles.text, styles.coords]}>Humedad: {parseFloat(humidity).toFixed(1)}{" %"}</Text>
       </View>
       {imageUrl ? (
         <TouchableOpacity onPress={() => {}}>
