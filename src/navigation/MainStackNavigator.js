@@ -14,6 +14,8 @@ import NewFungiRecordScreen3 from "../screens/NewFungiRecordScreen3";
 import FungiRecordsScreen from "../screens/FungiRecordsScreen";
 import AccountScreen from "../screens/AccountScreen";
 import SeeProfileScreen from "../screens/SeeProfileScreen";
+import AnalyticsScreen from "../screens/AnalyticsScreen";
+import MapScreen from "../screens/MapScreen";
 
 function ScreenOptions(title) {
   return {
@@ -94,6 +96,16 @@ const MainStackNavigator = () => {
         name="SeeProfileScreen"
         component={SeeProfileScreen}
         options={ScreenOptions("Vista de perfil")}
+      />
+      <Stack.Screen
+        name="AnalyticsScreen"
+        component={AnalyticsScreen}
+        options={ScreenOptions("Analítica")}
+      />
+      <Stack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={ScreenOptions("Mapa")}
       />
     </Stack.Navigator>
   );

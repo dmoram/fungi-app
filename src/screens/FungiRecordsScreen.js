@@ -1,12 +1,25 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native'
-import React,{useState, useEffect} from 'react'
-import GlobalStyles from "../styles/GlobalStyles"
-import FungiRecord from '../components/Post/FungiRecord'
-import axios from "../api/axios"
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Image
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import FungiRecord from "../components/Post/FungiRecord";
+import axios from "../api/axios";
 import { Picker } from "@react-native-picker/picker";
-import { getUserId } from '../utils/storage'
+import { getUserId } from "../utils/storage";
 
-const RecordList = ({ records, onPressLike, onPressDislike, onPressComments, fetchRecords, navigation }) => {
+const RecordList = ({
+  records,
+  onPressLike,
+  onPressDislike,
+  onPressComments,
+  fetchRecords,
+  navigation,
+}) => {
   const renderItem = ({ item }) => (
     <FungiRecord
       id={item.id}
@@ -57,8 +70,7 @@ const orderRecordsByRelevance = (records) => {
   return records.sort((a, b) => b.likes - a.likes);
 };
 
-
-const FungiRecordsScreen = ({navigation}) => {
+const FungiRecordsScreen = ({ navigation }) => {
   const [records, setRecords] = useState([]);
   const [orderBy, setOrderBy] = useState("recent");
 
@@ -100,7 +112,6 @@ const FungiRecordsScreen = ({navigation}) => {
     return unsubscribe;
   }, [navigation]);
 
-
   return (
     <View
       style={{
@@ -108,11 +119,21 @@ const FungiRecordsScreen = ({navigation}) => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#F9F9F8",
-        marginTop:20
+        marginTop: 20,
       }}
     >
-      
-        <View style={styles.orderContainer}>
+      <View style={{ padding: 30 }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AnalyticsScreen")}
+          style={{backgroundColor:"#FFD300", borderRadius:10, padding:15}}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{fontSize:18}}>Ver graficos  </Text>
+            <Image source={require("../assets/chart.png")}/>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.orderContainer}>
         <Text style={{ marginLeft: 20, fontSize: 18 }}>Ordenar por</Text>
         <Picker
           selectedValue={orderBy}
@@ -148,10 +169,10 @@ const FungiRecordsScreen = ({navigation}) => {
         navigation={navigation}
       />
     </View>
-  )
-}
+  );
+};
 
-export default FungiRecordsScreen
+export default FungiRecordsScreen;
 
 const styles = StyleSheet.create({
   button: {
@@ -175,7 +196,7 @@ const styles = StyleSheet.create({
   createIcon: {
     width: 40,
     height: 40,
-    tintColor:"white"
+    tintColor: "white",
   },
   createButton: {
     flexDirection: "row",
@@ -194,9 +215,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 5,
   },
-  text:{
-    fontSize:18,
-    textAlign:"center",
-    marginTop:20
-  }
+  text: {
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 20,
+  },
 });

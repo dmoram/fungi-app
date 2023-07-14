@@ -41,6 +41,7 @@ const FungiRecord = ({
   const [isMod, setIsMod] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(false);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -84,6 +85,18 @@ const FungiRecord = ({
     setIsPopupOpen(false);
   };
 
+  const getClassLabel = (classNumber) => {
+    const classMap = {
+      1: "Globoideo",
+      2: "Aspecto de copa",
+      3: "Sésiles",
+      4: "Aspecto gelatinoso",
+      5: "Pileado",
+    };
+
+    return classMap[classNumber] || "";
+  };
+
   return (
     <View style={styles.container}>
       {isMod === "true" ? (
@@ -123,23 +136,38 @@ const FungiRecord = ({
         <Text style={styles.sectionTitle}>Descripción</Text>
         <Text style={[styles.text, styles.description]}>{description}</Text>
       </View>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Ubicación</Text>
-        <Text style={[styles.text, styles.description]}>{location}</Text>
-        <Text style={[styles.text, styles.coords]}>Latitud: {latitude}</Text>
-        <Text style={[styles.text, styles.coords]}>Longitud: {longitude}</Text>
-        <Text style={[styles.text, styles.coords]}>Altitud: {altitude}</Text>
+      <View style={[styles.section, { flexDirection: "row" }]}>
+        <View>
+          <Text style={styles.sectionTitle}>Ubicación</Text>
+          <Text style={[styles.text, styles.description]}>{location}</Text>
+          <Text style={[styles.text, styles.coords]}>Latitud: {latitude}</Text>
+          <Text style={[styles.text, styles.coords]}>
+            Longitud: {longitude}
+          </Text>
+          <Text style={[styles.text, styles.coords]}>Altitud: {altitude}</Text>
+        </View>
+        <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+          <TouchableOpacity onPress={() => navigation.navigate("MapScreen",{latitude: latitude, longitude: longitude, description: description})}>
+            <Text>Ver en mapa</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Clasificación</Text>
         <Text style={[styles.text, styles.description]}>
-          Clasificación: {fungiClass}
+          Clasificación: {getClassLabel(fungiClass)}
         </Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Datos sensores</Text>
-        <Text style={[styles.text, styles.coords]}>Temperatura: {parseFloat(temperature).toFixed(1)}{" °C"}</Text>
-        <Text style={[styles.text, styles.coords]}>Humedad: {parseFloat(humidity).toFixed(1)}{" %"}</Text>
+        <Text style={[styles.text, styles.coords]}>
+          Temperatura: {parseFloat(temperature).toFixed(1)}
+          {" °C"}
+        </Text>
+        <Text style={[styles.text, styles.coords]}>
+          Humedad: {parseFloat(humidity).toFixed(1)}
+          {" %"}
+        </Text>
       </View>
       {imageUrl ? (
         <TouchableOpacity onPress={() => {}}>

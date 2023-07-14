@@ -6,18 +6,13 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  Button,
-  StatusBar,
 } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import GlobalStyles from "../styles/GlobalStyles";
 import { getUserId } from "../utils/storage";
 import axios from "../api/axios";
 import Confirm from "../components/Popup/ConfirmPopup";
 import Notif from "../components/Popup/NotifPopup";
-import Upload from "../components/Popup/UploadPopup";
-import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
 import CameraComponent from "../components/Camera/CameraComponent";
 
 const NewPostScreen = ({ navigation }) => {
